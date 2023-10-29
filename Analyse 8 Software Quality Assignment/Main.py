@@ -10,8 +10,6 @@ from SystemAdmin import SystemAdmin
 from SuperAdmin import SuperAdmin
 
 
-# SuperAdmin.list_users()
-# SuperAdmin.list_members()
 Database.create_database()
 super_admin = SuperAdmin()
 super_admin.add_super_admin()
@@ -25,15 +23,21 @@ while (loop):
 
     if (login_succesful):
         current_user = Authentication.get_user_info(username)
-        current_user_role = current_user[0]
+        current_user_username = current_user[0]
+        current_user_password = current_user[1]
+        current_user_salt = current_user[2]
+        current_user_role = current_user[3]
+        current_user_first_name = current_user[0]
+        current_user_last_name = current_user[0]
+        current_user_registration_date = current_user[0]
         
-        if (role[0] == "Trainer"):
+        if (current_user_role == "Trainer"):
             TrainerInterface.trainer_screen()
 
-        elif (role[0] == "SystemAdmin"):
+        elif (current_user_role == "SystemAdmin"):
             SystemAdminInterface.system_admin_screen()
 
-        elif (role[0] == "SuperAdmin"):
+        elif (current_user_role == "SuperAdmin"):
             current_user = SuperAdmin()
             SuperAdminInterface.super_admin_screen()
 

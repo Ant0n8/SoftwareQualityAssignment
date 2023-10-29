@@ -1,6 +1,7 @@
 import datetime
 import os
 import sqlite3
+import Authentication
 from Trainer import Trainer
 
 class SystemAdmin(Trainer):
@@ -20,14 +21,18 @@ class SystemAdmin(Trainer):
         users = cursor.fetchall()
         connection.close()
         
+        number = 1
         for user in users:
-            print(user)
+            print("[" + str(number) + "]" + " " + str(user))
+            number += 1
 
     def add_trainer(trainer):
+        hashed_password = Authentication.hash_password(trainer.password, trainer.salt)
+
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO users (username, password, role, first_name, last_name) VALUES (?, ?, ?, ?, ?)", 
-                       (trainer.username, trainer.password, trainer.role, trainer.first_name, trainer.last_name))
+        cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                       (trainer.username, hashed_password, trainer.salt, trainer.role, trainer.first_name, trainer.last_name, trainer.registration_date))
         connection.commit()
         connection.close()
 

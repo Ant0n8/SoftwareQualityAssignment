@@ -59,3 +59,7 @@ def username_exists(username):
     
     connection.close
     return False
+
+def hash_password(password, salt):
+    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
+    return hashed_password

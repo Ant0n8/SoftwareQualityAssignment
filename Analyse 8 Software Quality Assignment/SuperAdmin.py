@@ -17,8 +17,7 @@ class SuperAdmin(SystemAdmin):
 
     def add_super_admin(self):
         if (not Authentication.username_exists(self.username)):
-            password = self.password
-            hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), self.salt.encode('utf-8'), 100000)
+            hashed_password = Authentication.hash_password(self.password, self.salt)
 
             connection = sqlite3.connect("FitnessPlus.db")
             cursor = connection.cursor()
@@ -27,12 +26,24 @@ class SuperAdmin(SystemAdmin):
             connection.commit()
             connection.close()
 
+    def add_system_admin(system_admin):
+        hashed_password = Authentication.hash_password(system_admin.password, system_admin.salt)
+
+        connection = sqlite3.connect("FitnessPlus.db")
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                       (system_admin.username, hashed_password, system_admin.salt, system_admin.role, system_admin.first_name, system_admin.last_name, system_admin.registration_date))
+        connection.commit()
+        connection.close()
+
     def list_members():
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM members")
-        users = cursor.fetchall()
+        members = cursor.fetchall()
         connection.close()
         
-        for user in users:
-            print(user)
+        number = 1
+        for member in members:
+            print("[" + str(number) + "]" + " " + str(member))
+            number += 1
