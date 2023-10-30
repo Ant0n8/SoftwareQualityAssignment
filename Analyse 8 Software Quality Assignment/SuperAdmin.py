@@ -26,16 +26,6 @@ class SuperAdmin(SystemAdmin):
             connection.commit()
             connection.close()
 
-    def add_system_admin(system_admin):
-        hashed_password = Authentication.hash_password(system_admin.password, system_admin.salt)
-
-        connection = sqlite3.connect("FitnessPlus.db")
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                       (system_admin.username, hashed_password, system_admin.salt, system_admin.role, system_admin.first_name, system_admin.last_name, system_admin.registration_date))
-        connection.commit()
-        connection.close()
-
     def list_members():
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
@@ -45,5 +35,5 @@ class SuperAdmin(SystemAdmin):
         
         number = 1
         for member in members:
-            print("[" + str(number) + "]" + " " + str(member))
+            print("(" + str(number) + ")" + " " + str(member))
             number += 1

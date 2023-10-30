@@ -23,6 +23,14 @@ def login(username, password):
     else:
         return False
     
+def get_member_info(id):
+    connection = sqlite3.connect("FitnessPlus.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM members WHERE id=?", (id,))
+    member_data = cursor.fetchone()
+    connection.close()
+    return member_data
+
 def get_user_info(username):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()

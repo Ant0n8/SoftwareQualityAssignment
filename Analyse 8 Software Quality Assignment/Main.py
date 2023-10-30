@@ -21,15 +21,18 @@ while (loop):
     login_succesful = Authentication.login(username, password)
     role = Authentication.role_check(username)
 
-    if (login_succesful):
+    if (username == "None" and password == "None"):
+        loop = False
+
+    elif (login_succesful):
         current_user = Authentication.get_user_info(username)
         current_user_username = current_user[0]
         current_user_password = current_user[1]
         current_user_salt = current_user[2]
         current_user_role = current_user[3]
-        current_user_first_name = current_user[0]
-        current_user_last_name = current_user[0]
-        current_user_registration_date = current_user[0]
+        current_user_first_name = current_user[4]
+        current_user_last_name = current_user[5]
+        current_user_registration_date = current_user[6]
         
         if (current_user_role == "Trainer"):
             TrainerInterface.trainer_screen()

@@ -28,11 +28,11 @@ class Trainer(Member):
         connection.commit()
         connection.close()
 
-    def modify_member_info(id, updated_info):
+    def modify_member_info(id, first_name, last_name, age, gender, weight, address, email, phone_number):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("UPDATE members SET first_name=?, last_name=?, age=?, gender=?, weight=?, address=?, email=?, phone_number=? WHERE id=?",
-            (updated_info.first_name, updated_info.last_name, updated_info.age, updated_info.gender, updated_info.weight, updated_info.address, updated_info.email, updated_info.phone_number, id))
+            (first_name, last_name, age, gender, weight, address, email, phone_number, id))
         connection.commit()
         connection.close()
 
@@ -43,4 +43,8 @@ class Trainer(Member):
             (f'%{search_key}%', f'%{search_key}%', f'%{search_key}%', f'%{search_key}%', f'%{search_key}%', f'%{search_key}%'))
         result = cursor.fetchall()
         connection.close()
-        return result
+        
+        number = 1
+        for member in result:
+            print("(" + str(number) + ")" + " " + str(member))
+            number += 1

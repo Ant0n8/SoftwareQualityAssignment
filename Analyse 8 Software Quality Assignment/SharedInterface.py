@@ -31,7 +31,9 @@ def login_screen():
             return (username, password)
         
         elif (choice == "0"):
-            loop = False
+            username = "None"
+            password = "None"
+            return (username, password)
         
         else:
             print("Invalid option")

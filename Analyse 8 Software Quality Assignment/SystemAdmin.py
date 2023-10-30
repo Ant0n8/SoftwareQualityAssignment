@@ -23,28 +23,28 @@ class SystemAdmin(Trainer):
         
         number = 1
         for user in users:
-            print("[" + str(number) + "]" + " " + str(user))
+            print("(" + str(number) + ")" + " " + str(user))
             number += 1
 
-    def add_trainer(trainer):
-        hashed_password = Authentication.hash_password(trainer.password, trainer.salt)
+    def add_user(user):
+        hashed_password = Authentication.hash_password(user.password, user.salt)
 
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                       (trainer.username, hashed_password, trainer.salt, trainer.role, trainer.first_name, trainer.last_name, trainer.registration_date))
+                       (user.username, hashed_password, user.salt, user.role, user.first_name, user.last_name, user.registration_date))
         connection.commit()
         connection.close()
 
-    def modify_trainer_info(username, updated_info):
+    def modify_user_info(username, first_name, last_name):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("UPDATE users SET first_name=?, last_name=? WHERE username=?", 
-                       (updated_info.first_name, updated_info.last_name, username))
+                       (first_name, last_name, username))
         connection.commit()
         connection.close()
 
-    def delete_trainer(username):
+    def delete_user(username):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("DELETE FROM users WHERE username=?", (username,))
