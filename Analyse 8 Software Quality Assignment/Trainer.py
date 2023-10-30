@@ -41,10 +41,12 @@ class Trainer(Member):
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM members WHERE id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR address LIKE ? OR email LIKE ? OR phone_number LIKE ?",
             (f'%{search_key}%', f'%{search_key}%', f'%{search_key}%', f'%{search_key}%', f'%{search_key}%', f'%{search_key}%'))
-        result = cursor.fetchall()
+        members = cursor.fetchall()
         connection.close()
         
-        number = 1
-        for member in result:
-            print("(" + str(number) + ")" + " " + str(member))
+        number = 0
+        for member in members:
             number += 1
+            print("(" + str(number) + ")" + " " + str(member))
+
+        print("Results: " + str(number))

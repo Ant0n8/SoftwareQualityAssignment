@@ -68,6 +68,20 @@ def username_exists(username):
     connection.close
     return False
 
+def id_exists(id):
+    connection = sqlite3.connect("FitnessPlus.db")
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM members WHERE id = ?", (id,))
+    user_count = cursor.fetchone()[0]
+
+    if user_count > 0:
+        connection.close()
+        return True
+    
+    connection.close
+    return False
+
 def hash_password(password, salt):
     hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
     return hashed_password

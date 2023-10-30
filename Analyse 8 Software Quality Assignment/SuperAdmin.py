@@ -33,7 +33,9 @@ class SuperAdmin(SystemAdmin):
         members = cursor.fetchall()
         connection.close()
         
-        number = 1
+        number = 0
         for member in members:
-            print("(" + str(number) + ")" + " " + str(member))
             number += 1
+            print("(" + str(number) + ")" + " " + str(member))
+        
+        print("Total Members: " + str(number))

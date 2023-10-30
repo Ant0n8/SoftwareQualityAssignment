@@ -21,10 +21,12 @@ class SystemAdmin(Trainer):
         users = cursor.fetchall()
         connection.close()
         
-        number = 1
+        number = 0
         for user in users:
-            print("(" + str(number) + ")" + " " + str(user))
             number += 1
+            print("(" + str(number) + ")" + " " + str(user))
+        
+        print("Total Users: " + str(number))
 
     def add_user(user):
         hashed_password = Authentication.hash_password(user.password, user.salt)

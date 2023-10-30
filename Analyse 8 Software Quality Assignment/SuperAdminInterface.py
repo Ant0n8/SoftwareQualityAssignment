@@ -146,7 +146,7 @@ def add_user_screen():
     loop = True
     while (loop):
         SharedInterface.clear_console()
-        print("Add Member")
+        print("Add User")
         print("--------------------------------------------------")
         print("[1] Username: " + username)
         print("[2] Password: " + password)
@@ -396,7 +396,7 @@ def modify_member_screen():
     loop = True
     while (loop):
         SharedInterface.clear_console()
-        print("Delete Member")
+        print("Modify Member")
         print("--------------------------------------------------")
         print("[1] Search Id")
         print()
@@ -463,10 +463,15 @@ def modify_member_screen():
         elif (choice == "10"):
             confirm = input("Type 'modify' to modify member or 'Enter' to cancel: ")
             if (confirm == "modify"):
-                SuperAdmin.modify_member_info(id, first_name, last_name, age, gender, weight, address, email, phone_number)
-                print("Member modified succesfully")
-                input("Press 'Enter' to continue")
-                loop = False
+                if (id != ""):
+                    SuperAdmin.modify_member_info(id, first_name, last_name, age, gender, weight, address, email, phone_number)
+                    print("Member modified succesfully")
+                    input("Press 'Enter' to continue")
+                    loop = False
+                
+                else:
+                    print("Invalid Id")
+                    input("Press 'Enter' to continue")
 
             else:
                 print("Member not modified")
@@ -489,7 +494,7 @@ def modify_user_screen():
     loop = True
     while (loop):
         SharedInterface.clear_console()
-        print("Delete Member")
+        print("Modify User")
         print("--------------------------------------------------")
         print("[1] Search Username")
         print()
@@ -529,10 +534,15 @@ def modify_user_screen():
         elif (choice == "9"):
             confirm = input("Type 'modify' to modify user or 'Enter' to cancel: ")
             if (confirm == "modify"):
-                SuperAdmin.modify_user_info(username, first_name, last_name)
-                print("User modified succesfully")
-                input("Press 'Enter' to continue")
-                loop = False
+                if (username != ""):
+                    SuperAdmin.modify_user_info(username, first_name, last_name)
+                    print("User modified succesfully")
+                    input("Press 'Enter' to continue")
+                    loop = False
+                
+                else:
+                    print("Invalid Username")
+                    input("Press 'Enter' to continue")
 
             else:
                 print("User not modified")
@@ -546,17 +556,6 @@ def modify_user_screen():
             input("Press 'Enter' to continue")
 
 def search_member_screen():
-    id = ""
-    first_name = ""
-    last_name = ""
-    age = ""
-    gender = ""
-    weight = ""
-    address = ""
-    email = ""
-    phone_number = ""
-    registration_date = ""
-
     loop = True
     while (loop):
         SharedInterface.clear_console()
@@ -572,6 +571,7 @@ def search_member_screen():
         if (choice == "1"):
             search_key = input("Search Key: ")
             SuperAdmin.search_member(search_key)
+            input("Press 'Enter' to continue")
 
         elif (choice == "0"):
             loop = False
