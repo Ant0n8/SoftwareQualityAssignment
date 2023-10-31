@@ -95,30 +95,61 @@ def add_member_screen():
 
         if (choice == "1"):
             first_name = input("First Name: ")
+            if (not Authentication.is_valid_name(first_name)):
+                print("Invalid first name")
+                input("Press 'Enter' to continue")
+                first_name = ""
 
         elif (choice == "2"):
             last_name = input("Last Name: ") 
+            if (not Authentication.is_valid_name(last_name)):
+                print("Invalid last name")
+                input("Press 'Enter' to continue")
+                last_name = ""
 
         elif (choice == "3"):
             age = input("Age: ")
+            if (not Authentication.is_valid_age(age)):
+                print("Invalid age")
+                input("Press 'Enter' to continue")
+                age = ""
         
         elif (choice == "4"):
-            gender = input("Gender: ")
+            gender = input("Gender (male, female, other): ")
+            if (not Authentication.is_valid_gender(gender)):
+                print("Invalid gender")
+                input("Press 'Enter' to continue")
+                gender = ""
         
         elif (choice == "5"):
             weight = input("Weight: ")
+            if (not Authentication.is_valid_weight(weight)):
+                print("Invalid weight")
+                input("Press 'Enter' to continue")
+                weight = ""
 
         elif (choice == "6"):
             address = input("Address: ")
 
         elif (choice == "7"):
             email = input("Email: ")
+            if (not Authentication.is_valid_email(email)):
+                print("Invalid email")
+                input("Press 'Enter' to continue")
+                email = ""
 
         elif (choice == "8"):
-            phone_number = input("Phone Number: ")
+            phone_number = input("Phone Number: +31-6-")
+            if (Authentication.is_valid_phone_number(phone_number)):
+                phone_number = "+31-6-" + phone_number
+
+            else:
+                print("Invalid phone number")
+                input("Press 'Enter' to continue")
+                phone_number = ""
 
         elif (choice == "9"):
-            confirm = input("Type 'yes' to add member or 'Enter' to cancel: ")
+            confirm = input("Type 'yes' to add member or press 'Enter' to cancel: ")
             if (confirm == "yes"):
                 new_member = Member(first_name, last_name, age, gender, weight, address, email, phone_number)
                 SuperAdmin.add_member(new_member)
@@ -185,7 +216,7 @@ def add_user_screen():
             last_name = input("Last Name: ")
       
         elif (choice == "9"):
-            confirm = input("Type 'trainer' to add Trainer or 'systemadmin' to add SystemAdmin or 'Enter' to cancel: ")
+            confirm = input("Type 'trainer' to add Trainer or 'systemadmin' to add SystemAdmin or press 'Enter' to cancel: ")
             if (confirm == "trainer"):
                 new_trainer = Trainer(username, password, first_name, last_name)
                 SuperAdmin.add_user(new_trainer)
@@ -304,7 +335,7 @@ def delete_member_screen():
                 input("Press 'Enter' to continue")
 
         elif (choice == "9"):
-            confirm = input("Type 'delete' to delete member or 'Enter' to cancel: ")
+            confirm = input("Type 'delete' to delete member or press 'Enter' to cancel: ")
             if (confirm == "delete"):
                 SuperAdmin.delete_member(id)
                 print("Member deleted succesfully")
@@ -363,7 +394,7 @@ def delete_user_screen():
                 input("Press 'Enter' to continue")
 
         elif (choice == "9"):
-            confirm = input("Type 'delete' to delete user or 'Enter' to cancel: ")
+            confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
             if (confirm == "delete"):
                 SuperAdmin.delete_user(username)
                 print("User deleted succesfully")
@@ -461,7 +492,7 @@ def modify_member_screen():
             phone_number = input("Phone Number: ")
 
         elif (choice == "10"):
-            confirm = input("Type 'modify' to modify member or 'Enter' to cancel: ")
+            confirm = input("Type 'modify' to modify member or press 'Enter' to cancel: ")
             if (confirm == "modify"):
                 if (id != ""):
                     SuperAdmin.modify_member_info(id, first_name, last_name, age, gender, weight, address, email, phone_number)
@@ -532,7 +563,7 @@ def modify_user_screen():
             last_name = input("Last Name: ")
 
         elif (choice == "9"):
-            confirm = input("Type 'modify' to modify user or 'Enter' to cancel: ")
+            confirm = input("Type 'modify' to modify user or press 'Enter' to cancel: ")
             if (confirm == "modify"):
                 if (username != ""):
                     SuperAdmin.modify_user_info(username, first_name, last_name)
