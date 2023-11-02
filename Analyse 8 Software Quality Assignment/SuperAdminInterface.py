@@ -430,6 +430,9 @@ def list_users_screen():
     while (loop):
         print("List Users")
         print("--------------------------------------------------")
+        print(f"{' '.ljust(6)}{'Name'.ljust(30)} Username\n")
+  
+
         SuperAdmin.list_users()
         print("--------------------------------------------------")
         print("[0] Back")

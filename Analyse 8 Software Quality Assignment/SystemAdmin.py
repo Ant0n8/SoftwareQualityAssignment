@@ -24,7 +24,8 @@ class SystemAdmin(Trainer):
         number = 0
         for user in users:
             number += 1
-            print("(" + str(number) + ")" + " " + str(user))
+            # print("(" + str(number) + ")" + " " + str(user))
+            print(f"{str(number).ljust(6)}{user[3].ljust(30)} {user[4]}")
         
         print("Total Users: " + str(number))
 
