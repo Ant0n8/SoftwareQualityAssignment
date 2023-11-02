@@ -21,3 +21,14 @@ class Member:
         checksum = sum(int(digit) for digit in id) % 10
         id += str(checksum)
         return id
+    
+    def generate_id():
+        current_year = datetime.now().year % 100
+        random_digits = [str(random.randint(0, 9)) for _ in range(7)]
+
+        digits = [int(digit) for digit in str(current_year) + "".join(random_digits)]
+        checksum = sum(digits) % 10
+
+        id = f"{current_year}{''.join(random_digits)}{checksum}"
+
+        return id

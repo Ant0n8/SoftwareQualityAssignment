@@ -12,7 +12,7 @@ class SystemAdmin(Trainer):
         self.role = "SystemAdmin"
         self.first_name = first_name
         self.last_name = last_name
-        self.registration_date = datetime.date.today()
+        self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
 
     def list_users():
         connection = sqlite3.connect("FitnessPlus.db")
@@ -21,13 +21,13 @@ class SystemAdmin(Trainer):
         users = cursor.fetchall()
         connection.close()
         
-        number = 0
+        count = 0
         for user in users:
-            number += 1
-            # print("(" + str(number) + ")" + " " + str(user))
-            print(f"{str(number).ljust(6)}{user[3].ljust(30)} {user[4]}")
+            count += 1
+            print(f"{str(count).ljust(5)} {user[0].ljust(15)} {user[3].ljust(15)} {user[4].ljust(15)} {user[5].ljust(15)} {user[6]}")
         
-        print("Total Users: " + str(number))
+        print()
+        print("Total Users: " + str(count))
 
     def add_user(user):
         hashed_password = Authentication.hash_password(user.password, user.salt)

@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 import os
 import sqlite3
 import Authentication
@@ -13,7 +12,7 @@ class SuperAdmin(SystemAdmin):
         self.role = "SuperAdmin"
         self.first_name = "Super"
         self.last_name = "Admin"
-        self.registration_date = datetime.date.today()
+        self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
 
     def add_super_admin(self):
         if (not Authentication.username_exists(self.username)):
@@ -33,9 +32,9 @@ class SuperAdmin(SystemAdmin):
         members = cursor.fetchall()
         connection.close()
         
-        number = 0
+        count = 0
         for member in members:
-            number += 1
-            print("(" + str(number) + ")" + " " + str(member))
+            count += 1
+            print("(" + str(count) + ")" + " " + str(member))
         
-        print("Total Members: " + str(number))
+        print("Total Members: " + str(count))

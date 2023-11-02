@@ -1,6 +1,4 @@
-import re
 import hashlib
-import os
 import sqlite3
 
 
@@ -49,16 +47,14 @@ def role_check(username):
     return user_data
 
 def is_valid_username(username):
-    if 8 <= len(username) <= 12:
-        if username[0].isalpha() or username[0] == '_':
-            for char in username[1:]:
-                if not (char.isalnum() or char in "_'."):
-                    return False
-            return True
-    return False
+    if 8 <= len(username) <= 12 and (username[0].isalpha() or username[0] == "_") and all(char.isalnum() or char in "_'." for char in username[1:]):
+        return True
+    
+    else:
+        return False
 
 def is_valid_password(password):
-    if 12 <= len(password) <= 30:
+    if (12 <= len(password) <= 30):
         has_lowercase = any(char.islower() for char in password)
         has_uppercase = any(char.isupper() for char in password)
         has_digit = any(char.isdigit() for char in password)
@@ -67,28 +63,18 @@ def is_valid_password(password):
 
         if has_lowercase and has_uppercase and has_digit and has_special:
             return True
-
-    return False
+        
+        else:
+            return False
+        
+    else:
+        return False
 
 def username_exists(username):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM users WHERE username = ?", (username,))
-    user_count = cursor.fetchone()[0]
-
-    if user_count > 0:
-        connection.close()
-        return True
-    
-    connection.close
-    return False
-
-def id_exists(id):
-    connection = sqlite3.connect("FitnessPlus.db")
-    cursor = connection.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM members WHERE id = ?", (id,))
     user_count = cursor.fetchone()[0]
 
     if user_count > 0:

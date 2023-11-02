@@ -11,7 +11,7 @@ class Trainer(Member):
         self.role = "Trainer"
         self.first_name = first_name
         self.last_name = last_name
-        self.registration_date = datetime.date.today()
+        self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
 
     def update_password(self, new_password):
         connection = sqlite3.connect("FitnessPlus.db")
