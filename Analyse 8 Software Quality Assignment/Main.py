@@ -21,10 +21,7 @@ while (loop):
     login_succesful = Authentication.login(username, password)
     role = Authentication.role_check(username)
 
-    if (username == "None" and password == "None"):
-        loop = False
-
-    elif (login_succesful):
+    if (login_succesful):
         current_user = Authentication.get_user_info(username)
         current_user_username = current_user[0]
         current_user_password = current_user[1]

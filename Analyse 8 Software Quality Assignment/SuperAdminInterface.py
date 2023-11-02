@@ -33,10 +33,10 @@ def super_admin_screen():
             add_member_screen()
         
         elif (choice == "2"):
-            modify_member_screen
+            modify_member_screen()
 
         elif (choice == "3"):
-            delete_member_screen
+            delete_member_screen()
 
         elif (choice == "4"):
             list_members_screen()
@@ -115,19 +115,29 @@ def add_member_screen():
                 age = ""
         
         elif (choice == "4"):
-            gender = input("Gender ([1] male, [2] female, [3] other): ")
-            if (gender == "1"):
-                gender = "Male"
+            loop_gender = True
+            while (loop_gender):
+                SharedInterface.clear_console()
+                print("[1] Male")
+                print("[2] Female")
+                print("[3] Other")
+                print("--------------------------------------------------")
+                gender = input("Gender: ")
+                if (gender == "1"):
+                    gender = "Male"
+                    loop_gender = False
 
-            elif (gender == "2"):
-                gender = "Female"
+                elif (gender == "2"):
+                    gender = "Female"
+                    loop_gender = False
 
-            elif (gender == "3"):
-                gender = "Other"
+                elif (gender == "3"):
+                    gender = "Other"
+                    loop_gender = False
 
-            else:
-                print("Invalid option")
-                input("Press 'Enter' to continue")
+                else:
+                    print("Invalid option")
+                    input("Press 'Enter' to continue")
             
             if (not Authentication.is_valid_gender(gender)):
                 print("Bad input incident logged")
@@ -152,10 +162,10 @@ def add_member_screen():
                 SharedInterface.clear_console()
                 print("Address")
                 print("--------------------------------------------------")
-                print("[1] Street Name" + street_name)
-                print("[2] House Number" + house_number)
-                print("[3] Zip Code" + zip_code)
-                print("[4] City" + city)
+                print("[1] Street Name: " + street_name)
+                print("[2] House Number: " + house_number)
+                print("[3] Zip Code: " + zip_code)
+                print("[4] City: " + city)
                 print()
                 print("[9] Continue")
                 print("[0] Back")
@@ -185,51 +195,64 @@ def add_member_screen():
                         zip_code = ""
                 
                 elif (choice_address == "4"):
-                    print("[1] Almere")
-                    print("[2] Amsterdam")
-                    print("[3] Breda")
-                    print("[4] Den Haag")
-                    print("[5] Eindhoven")
-                    print("[6] Groningen")
-                    print("[7] Nijmegen")
-                    print("[8] Rotterdam")
-                    print("[9] Tilburg")
-                    print("[10] Utrecht")
+                    loop_city = True
+                    while (loop_city):
+                        print("[1] Almere")
+                        print("[2] Amsterdam")
+                        print("[3] Breda")
+                        print("[4] Den Haag")
+                        print("[5] Eindhoven")
+                        print("[6] Groningen")
+                        print("[7] Nijmegen")
+                        print("[8] Rotterdam")
+                        print("[9] Tilburg")
+                        print("[10] Utrecht")
+                        print("--------------------------------------------------")
+                        city = input("City: ")
+                        
+                        if (city == "1"):
+                            city = "Almere"
+                            loop_city = False
 
-                    city = input("City: ")
-                    if (city == "1"):
-                        city = "Almere"
+                        elif (city == "2"):
+                            city = "Amsterdam"
+                            loop_city = False
 
-                    elif (city == "2"):
-                        city = "Amsterdam"
+                        elif (city == "3"):
+                            city = "Breda"
+                            loop_city = False
 
-                    elif (city == "3"):
-                        city = "Breda"
+                        elif (city == "4"):
+                            city = "Den Haag"
+                            loop_city = False
 
-                    elif (city == "4"):
-                        city = "Den Haag"
+                        elif (city == "5"):
+                            city = "Eindhoven"
+                            loop_city = False
 
-                    elif (city == "5"):
-                        city = "Eindhoven"
+                        elif (city == "6"):
+                            city = "Groningen"
+                            loop_city = False
 
-                    elif (city == "6"):
-                        city = "Groningen"
+                        elif (city == "7"):
+                            city = "Nijmegen"
+                            loop_city = False
 
-                    elif (city == "7"):
-                        city = "Nijmegen"
+                        elif (city == "8"):
+                            city = "Rotterdam"
+                            loop_city = False
 
-                    elif (city == "8"):
-                        city = "Rotterdam"
+                        elif (city == "9"):
+                            city = "Tilburg"
+                            loop_city = False
 
-                    elif (city == "9"):
-                        city = "Tilburg"
+                        elif (city == "10"):
+                            city = "Utrecht"
+                            loop_city = False
 
-                    elif (city == "10"):
-                        city = "Utrecht"
-
-                    else:
-                        print("Invalid option")
-                        input("Press 'Enter' to continue")
+                        else:
+                            print("Invalid option")
+                            input("Press 'Enter' to continue")
 
                     if (not Authentication.is_valid_city(city)):
                         print("Bad input incident logged")
@@ -272,16 +295,21 @@ def add_member_screen():
                 phone_number = ""
 
         elif (choice == "9"):
-            confirm = input("Type 'yes' to add member or press 'Enter' to cancel: ")
-            if (confirm == "yes"):
-                new_member = Member(first_name, last_name, age, gender, weight, address, email, phone_number)
-                SuperAdmin.add_member(new_member)
-                print("Member added succesfully")
-                input("Press 'Enter' to continue")
-                break
+            if (first_name != "" and last_name != "" and age != "" and gender != "" and weight != "" and address != "" and email != "" and phone_number != ""):
+                confirm = input("Type 'yes' to add member or press 'Enter' to cancel: ")
+                if (confirm == "yes"):
+                    new_member = Member(first_name, last_name, age, gender, weight, address, email, phone_number)
+                    SuperAdmin.add_member(new_member)
+                    print("Member added succesfully")
+                    input("Press 'Enter' to continue")
+                    break
+
+                else:
+                    print("Member not added")
+                    input("Press 'Enter' to continue")
 
             else:
-                print("Member not added")
+                print("Not all fields have been filled in")
                 input("Press 'Enter' to continue")
 
         elif (choice == "0"):
@@ -347,23 +375,28 @@ def add_user_screen():
                 last_name = ""
       
         elif (choice == "9"):
-            confirm = input("Type 'trainer' to add Trainer or 'systemadmin' to add SystemAdmin or press 'Enter' to cancel: ")
-            if (confirm == "trainer"):
-                new_trainer = Trainer(username, password, first_name, last_name)
-                SuperAdmin.add_user(new_trainer)
-                print("Trainer added succesfully")
-                input("Press 'Enter' to continue")
-                loop = False
+            if (first_name != "" and last_name != ""):
+                confirm = input("Type 'trainer' to add Trainer or 'systemadmin' to add SystemAdmin or press 'Enter' to cancel: ")
+                if (confirm == "trainer"):
+                    new_trainer = Trainer(username, password, first_name, last_name)
+                    SuperAdmin.add_user(new_trainer)
+                    print("Trainer added succesfully")
+                    input("Press 'Enter' to continue")
+                    loop = False
 
-            elif (confirm == "systemadmin"):
-                new_system_admin = SystemAdmin(username, password, first_name, last_name)
-                SuperAdmin.add_user(new_system_admin)
-                print("SystemAdmin added succesfully")
-                input("Press 'Enter' to continue")
-                loop = False
+                elif (confirm == "systemadmin"):
+                    new_system_admin = SystemAdmin(username, password, first_name, last_name)
+                    SuperAdmin.add_user(new_system_admin)
+                    print("SystemAdmin added succesfully")
+                    input("Press 'Enter' to continue")
+                    loop = False
 
+                else:
+                    print("User not added")
+                    input("Press 'Enter' to continue")
+        
             else:
-                print("User not added")
+                print("Not all fields have been filled in")
                 input("Press 'Enter' to continue")
 
         elif (choice == "0"):
@@ -430,9 +463,6 @@ def delete_member_screen():
         print("--------------------------------------------------")
         print("[1] Search Id")
         print()
-        print("[9] Continue")
-        print("[0] Back")
-        print("--------------------------------------------------")
         print("Id: " + id)
         print("First Name: " + first_name)
         print("Last Name: " + last_name)
@@ -443,6 +473,9 @@ def delete_member_screen():
         print("Email: " + email)
         print("Phone Number: " + phone_number)
         print("Registration Date: " + registration_date)
+        print()
+        print("[9] Continue")
+        print("[0] Back")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")
@@ -466,15 +499,20 @@ def delete_member_screen():
                 input("Press 'Enter' to continue")
 
         elif (choice == "9"):
-            confirm = input("Type 'delete' to delete member or press 'Enter' to cancel: ")
-            if (confirm == "delete"):
-                SuperAdmin.delete_member(id)
-                print("Member deleted succesfully")
-                input("Press 'Enter' to continue")
-                loop = False
+            if (id != ""):
+                confirm = input("Type 'delete' to delete member or press 'Enter' to cancel: ")
+                if (confirm == "delete"):
+                    SuperAdmin.delete_member(id)
+                    print("Member deleted succesfully")
+                    input("Press 'Enter' to continue")
+                    loop = False
 
+                else:
+                    print("Member not deleted")
+                    input("Press 'Enter' to continue")
+            
             else:
-                print("Member not deleted")
+                print("Invalid Id")
                 input("Press 'Enter' to continue")
 
         elif (choice == "0"):
@@ -498,14 +536,14 @@ def delete_user_screen():
         print("--------------------------------------------------")
         print("[1] Search Username")
         print()
-        print("[9] Continue")
-        print("[0] Back")
-        print("--------------------------------------------------")
         print("Username: " + username)
         print("Role: " + role)
         print("First Name: " + first_name)
         print("Last Name: " + last_name)
         print("Registration Date: " + registration_date)
+        print()
+        print("[9] Continue")
+        print("[0] Back")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")
@@ -525,15 +563,20 @@ def delete_user_screen():
                 input("Press 'Enter' to continue")
 
         elif (choice == "9"):
-            confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
-            if (confirm == "delete"):
-                SuperAdmin.delete_user(username)
-                print("User deleted succesfully")
-                input("Press 'Enter' to continue")
-                loop = False
+            if (username != ""):
+                confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
+                if (confirm == "delete"):
+                    SuperAdmin.delete_user(username)
+                    print("User deleted succesfully")
+                    input("Press 'Enter' to continue")
+                    loop = False
 
+                else:
+                    print("User not deleted")
+                    input("Press 'Enter' to continue")
+            
             else:
-                print("User not deleted")
+                print("Invalid username")
                 input("Press 'Enter' to continue")
 
         elif (choice == "0"):
@@ -575,7 +618,6 @@ def modify_member_screen():
         print()
         print("[10] Continue")
         print("[0] Back")
-        print("--------------------------------------------------")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")
@@ -620,19 +662,29 @@ def modify_member_screen():
                 age = ""
         
         elif (choice == "5"):
-            gender = input("Gender ([1] male, [2] female, [3] other): ")
-            if (gender == "1"):
-                gender = "Male"
+            loop_gender = True
+            while (loop_gender):
+                SharedInterface.clear_console()
+                print("[1] Male")
+                print("[2] Female")
+                print("[3] Other")
+                print("--------------------------------------------------")
+                gender = input("Gender: ")
+                if (gender == "1"):
+                    gender = "Male"
+                    loop_gender = False
 
-            elif (gender == "2"):
-                gender = "Female"
+                elif (gender == "2"):
+                    gender = "Female"
+                    loop_gender = False
 
-            elif (gender == "3"):
-                gender = "Other"
+                elif (gender == "3"):
+                    gender = "Other"
+                    loop_gender = False
 
-            else:
-                print("Invalid option")
-                input("Press 'Enter' to continue")
+                else:
+                    print("Invalid option")
+                    input("Press 'Enter' to continue")
             
             if (not Authentication.is_valid_gender(gender)):
                 print("Bad input incident logged")
@@ -657,10 +709,10 @@ def modify_member_screen():
                 SharedInterface.clear_console()
                 print("Address")
                 print("--------------------------------------------------")
-                print("[1] Street Name" + street_name)
-                print("[2] House Number" + house_number)
-                print("[3] Zip Code" + zip_code)
-                print("[4] City" + city)
+                print("[1] Street Name: " + street_name)
+                print("[2] House Number: " + house_number)
+                print("[3] Zip Code: " + zip_code)
+                print("[4] City: " + city)
                 print()
                 print("[9] Continue")
                 print("[0] Back")
@@ -690,51 +742,64 @@ def modify_member_screen():
                         zip_code = ""
                 
                 elif (choice_address == "4"):
-                    print("[1] Almere")
-                    print("[2] Amsterdam")
-                    print("[3] Breda")
-                    print("[4] Den Haag")
-                    print("[5] Eindhoven")
-                    print("[6] Groningen")
-                    print("[7] Nijmegen")
-                    print("[8] Rotterdam")
-                    print("[9] Tilburg")
-                    print("[10] Utrecht")
+                    loop_city = True
+                    while (loop_city):
+                        print("[1] Almere")
+                        print("[2] Amsterdam")
+                        print("[3] Breda")
+                        print("[4] Den Haag")
+                        print("[5] Eindhoven")
+                        print("[6] Groningen")
+                        print("[7] Nijmegen")
+                        print("[8] Rotterdam")
+                        print("[9] Tilburg")
+                        print("[10] Utrecht")
+                        print("--------------------------------------------------")
+                        city = input("City: ")
 
-                    city = input("City: ")
-                    if (city == "1"):
-                        city = "Almere"
+                        if (city == "1"):
+                            city = "Almere"
+                            loop_city = False
 
-                    elif (city == "2"):
-                        city = "Amsterdam"
+                        elif (city == "2"):
+                            city = "Amsterdam"
+                            loop_city = False
 
-                    elif (city == "3"):
-                        city = "Breda"
+                        elif (city == "3"):
+                            city = "Breda"
+                            loop_city = False
 
-                    elif (city == "4"):
-                        city = "Den Haag"
+                        elif (city == "4"):
+                            city = "Den Haag"
+                            loop_city = False
 
-                    elif (city == "5"):
-                        city = "Eindhoven"
+                        elif (city == "5"):
+                            city = "Eindhoven"
+                            loop_city = False
 
-                    elif (city == "6"):
-                        city = "Groningen"
+                        elif (city == "6"):
+                            city = "Groningen"
+                            loop_city = False
 
-                    elif (city == "7"):
-                        city = "Nijmegen"
+                        elif (city == "7"):
+                            city = "Nijmegen"
+                            loop_city = False
 
-                    elif (city == "8"):
-                        city = "Rotterdam"
+                        elif (city == "8"):
+                            city = "Rotterdam"
+                            loop_city = False
 
-                    elif (city == "9"):
-                        city = "Tilburg"
+                        elif (city == "9"):
+                            city = "Tilburg"
+                            loop_city = False
 
-                    elif (city == "10"):
-                        city = "Utrecht"
+                        elif (city == "10"):
+                            city = "Utrecht"
+                            loop_city = False
 
-                    else:
-                        print("Invalid option")
-                        input("Press 'Enter' to continue")
+                        else:
+                            print("Invalid option")
+                            input("Press 'Enter' to continue")
 
                     if (not Authentication.is_valid_city(city)):
                         print("Bad input incident logged")
@@ -777,20 +842,25 @@ def modify_member_screen():
                 phone_number = ""
 
         elif (choice == "10"):
-            confirm = input("Type 'modify' to modify member or press 'Enter' to cancel: ")
-            if (confirm == "modify"):
-                if (id != ""):
-                    SuperAdmin.modify_member_info(id, first_name, last_name, age, gender, weight, address, email, phone_number)
-                    print("Member modified succesfully")
-                    input("Press 'Enter' to continue")
-                    loop = False
-                
+            if (first_name != "" and last_name != "" and age != "" and gender != "" and weight != "" and address != "" and email != "" and phone_number != ""):
+                confirm = input("Type 'modify' to modify member or press 'Enter' to cancel: ")
+                if (confirm == "modify"):
+                    if (id != ""):
+                        SuperAdmin.modify_member_info(id, first_name, last_name, age, gender, weight, address, email, phone_number)
+                        print("Member modified succesfully")
+                        input("Press 'Enter' to continue")
+                        loop = False
+                    
+                    else:
+                        print("Invalid Id")
+                        input("Press 'Enter' to continue")
+
                 else:
-                    print("Invalid Id")
+                    print("Member not modified")
                     input("Press 'Enter' to continue")
 
             else:
-                print("Member not modified")
+                print("Not all fields have been filled in")
                 input("Press 'Enter' to continue")
 
         elif (choice == "0"):
@@ -822,7 +892,6 @@ def modify_user_screen():
         print()
         print("[9] Continue")
         print("[0] Back")
-        print("--------------------------------------------------")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")
@@ -856,20 +925,25 @@ def modify_user_screen():
                 last_name = ""
 
         elif (choice == "9"):
-            confirm = input("Type 'modify' to modify user or press 'Enter' to cancel: ")
-            if (confirm == "modify"):
-                if (username != ""):
-                    SuperAdmin.modify_user_info(username, first_name, last_name)
-                    print("User modified succesfully")
-                    input("Press 'Enter' to continue")
-                    loop = False
-                
-                else:
-                    print("Invalid Username")
-                    input("Press 'Enter' to continue")
+            if (first_name != "" and last_name != ""):
+                confirm = input("Type 'modify' to modify user or press 'Enter' to cancel: ")
+                if (confirm == "modify"):
+                    if (username != ""):
+                        SuperAdmin.modify_user_info(username, first_name, last_name)
+                        print("User modified succesfully")
+                        input("Press 'Enter' to continue")
+                        loop = False
+                    
+                    else:
+                        print("Invalid Username")
+                        input("Press 'Enter' to continue")
 
+                else:
+                    print("User not modified")
+                    input("Press 'Enter' to continue")
+            
             else:
-                print("User not modified")
+                print("Not all fields have been filled in")
                 input("Press 'Enter' to continue")
 
         elif (choice == "0"):

@@ -111,35 +111,31 @@ def is_valid_phone_number(phone_number):
     
 def is_valid_name(name):
     allowed_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-'") 
-    if (len(name) <= 20):   
+    if (len(name) <= 20 and name != ""):   
         return all(character in allowed_characters for character in name)
     
     else:
         return False
     
 def is_valid_age(age):
-    if (age.isdigit() and age > 0):
+    if (age.isdigit() and int(age) > 0):
         return True
     
     else:
         return False
 
 def is_valid_email(email):
-    if '@' not in email:
+    try:
+        first_part, last_part = email.split('@')
+        
+        if ("@" in email and "." in last_part and first_part != "" and last_part != "" and not " " in first_part and not " " in last_part):
+            return True
+        
+        else:
+            return False
+        
+    except ValueError:
         return False
-    
-    first_part, last_part = email.split('@')
-    
-    if not first_part or not last_part:
-        return False
-    
-    if '.' not in last_part:
-        return False
-    
-    if ' ' in first_part or ' ' in last_part:
-        return False
-    
-    return True
 
 def is_valid_weight(weight):
     try:
@@ -169,7 +165,7 @@ def is_valid_street_name(street_name):
         return False
     
 def is_valid_house_number(house_number):
-    if (house_number.isdigit and house_number > 0):
+    if (house_number.isdigit() and int(house_number) > 0):
         return True
 
     else:
@@ -179,7 +175,7 @@ def is_valid_zip_code(zip_code):
     digits = zip_code[:4]
     letters = zip_code[4:]
 
-    if (len(zip_code == 6) and digits.isdigit() and letters.isalpha() and letters.isupper()):
+    if (len(zip_code) == 6 and digits.isdigit() and letters.isalpha() and letters.isupper()):
         return True
     
     else:
