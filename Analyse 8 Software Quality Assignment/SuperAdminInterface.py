@@ -115,11 +115,24 @@ def add_member_screen():
                 age = ""
         
         elif (choice == "4"):
-            gender = input("Gender (male, female, other): ")
-            if (not Authentication.is_valid_gender(gender)):
-                print("Invalid gender")
+            gender = input("Gender ([1] male, [2] female, [3] other): ")
+            if (gender == "1"):
+                gender = "Male"
+
+            elif (gender == "2"):
+                gender = "Female"
+
+            elif (gender == "3"):
+                gender = "Other"
+
+            else:
+                print("Invalid option")
                 input("Press 'Enter' to continue")
-                gender = ""
+            
+            if (not Authentication.is_valid_gender(gender)):
+                print("Bad input incident logged")
+                input()
+                loop = False
         
         elif (choice == "5"):
             weight = input("Weight: ")
@@ -129,7 +142,117 @@ def add_member_screen():
                 weight = ""
 
         elif (choice == "6"):
-            address = input("Address: ")
+            street_name = ""
+            house_number = ""
+            zip_code = ""
+            city = ""
+
+            loop_address = True
+            while (loop_address):
+                SharedInterface.clear_console()
+                print("Address")
+                print("--------------------------------------------------")
+                print("[1] Street Name" + street_name)
+                print("[2] House Number" + house_number)
+                print("[3] Zip Code" + zip_code)
+                print("[4] City" + city)
+                print()
+                print("[9] Continue")
+                print("[0] Back")
+                print("--------------------------------------------------")
+                choice_address = input("Select an option: ")
+                print("--------------------------------------------------")
+
+                if (choice_address == "1"):
+                    street_name = input("Street Name: ")
+                    if (not Authentication.is_valid_street_name(street_name)):
+                        print("Invalid street name")
+                        input("Press 'Enter' to continue")
+                        street_name = ""
+
+                elif (choice_address == "2"):
+                    house_number = input("House Number: ")
+                    if (not Authentication.is_valid_house_number(house_number)):
+                        print("Invalid house number")
+                        input("Press 'Enter' to continue")
+                        house_number = ""
+
+                elif (choice_address == "3"):
+                    zip_code = input("Zip Code (DDDDXX): ")
+                    if (not Authentication.is_valid_zip_code(zip_code)):
+                        print("Invalid zip code")
+                        input("Press 'Enter' to continue")
+                        zip_code = ""
+                
+                elif (choice_address == "4"):
+                    print("[1] Almere")
+                    print("[2] Amsterdam")
+                    print("[3] Breda")
+                    print("[4] Den Haag")
+                    print("[5] Eindhoven")
+                    print("[6] Groningen")
+                    print("[7] Nijmegen")
+                    print("[8] Rotterdam")
+                    print("[9] Tilburg")
+                    print("[10] Utrecht")
+
+                    city = input("City: ")
+                    if (city == "1"):
+                        city = "Almere"
+
+                    elif (city == "2"):
+                        city = "Amsterdam"
+
+                    elif (city == "3"):
+                        city = "Breda"
+
+                    elif (city == "4"):
+                        city = "Den Haag"
+
+                    elif (city == "5"):
+                        city = "Eindhoven"
+
+                    elif (city == "6"):
+                        city = "Groningen"
+
+                    elif (city == "7"):
+                        city = "Nijmegen"
+
+                    elif (city == "8"):
+                        city = "Rotterdam"
+
+                    elif (city == "9"):
+                        city = "Tilburg"
+
+                    elif (city == "10"):
+                        city = "Utrecht"
+
+                    else:
+                        print("Invalid option")
+                        input("Press 'Enter' to continue")
+
+                    if (not Authentication.is_valid_city(city)):
+                        print("Bad input incident logged")
+                        input()
+                        loop_address = False
+                        loop = False
+
+                elif (choice_address == "9"):
+                    if (Authentication.is_valid_address(street_name, house_number, zip_code, city)):
+                        address = f"{street_name} {house_number}, {zip_code}, {city}"
+                        loop_address = False
+                    
+                    else:
+                        print("Invalid address")
+                        input("Press 'Enter' to continue")
+                        address = ""
+
+                elif (choice_address == "0"):
+                    loop_address = False
+
+                else:
+                    print("Invalid option")
+                    input("Press 'Enter' to continue")
 
         elif (choice == "7"):
             email = input("Email: ")
@@ -211,9 +334,17 @@ def add_user_screen():
 
         elif (choice == "3"):
             first_name = input("First Name: ")
-        
+            if (not Authentication.is_valid_name(first_name)):
+                print("Invalid first name")
+                input("Press 'Enter' to continue")
+                first_name = ""
+
         elif (choice == "4"):
-            last_name = input("Last Name: ")
+            last_name = input("Last Name: ") 
+            if (not Authentication.is_valid_name(last_name)):
+                print("Invalid last name")
+                input("Press 'Enter' to continue")
+                last_name = ""
       
         elif (choice == "9"):
             confirm = input("Type 'trainer' to add Trainer or 'systemadmin' to add SystemAdmin or press 'Enter' to cancel: ")
@@ -305,9 +436,9 @@ def delete_member_screen():
         print("Id: " + id)
         print("First Name: " + first_name)
         print("Last Name: " + last_name)
-        print("Age: " + str(age))
+        print("Age: " + age)
         print("Gender: " + gender)
-        print("Weight: " + str(weight))
+        print("Weight: " + weight)
         print("Address: " + address)
         print("Email: " + email)
         print("Phone Number: " + phone_number)
@@ -467,29 +598,183 @@ def modify_member_screen():
                 print("Invalid Id")
                 input("Press 'Enter' to continue")
 
-        elif (choice == "2") :
+        elif (choice == "2"):
             first_name = input("First Name: ")
+            if (not Authentication.is_valid_name(first_name)):
+                print("Invalid first name")
+                input("Press 'Enter' to continue")
+                first_name = ""
 
-        elif (choice == "3") :
-            last_name = input("Last Name: ")
+        elif (choice == "3"):
+            last_name = input("Last Name: ") 
+            if (not Authentication.is_valid_name(last_name)):
+                print("Invalid last name")
+                input("Press 'Enter' to continue")
+                last_name = ""
 
-        elif (choice == "4") :
+        elif (choice == "4"):
             age = input("Age: ")
+            if (not Authentication.is_valid_age(age)):
+                print("Invalid age")
+                input("Press 'Enter' to continue")
+                age = ""
+        
+        elif (choice == "5"):
+            gender = input("Gender ([1] male, [2] female, [3] other): ")
+            if (gender == "1"):
+                gender = "Male"
 
-        elif (choice == "5") :
-            gender = input("Gender: ")
+            elif (gender == "2"):
+                gender = "Female"
 
-        elif (choice == "6") :
+            elif (gender == "3"):
+                gender = "Other"
+
+            else:
+                print("Invalid option")
+                input("Press 'Enter' to continue")
+            
+            if (not Authentication.is_valid_gender(gender)):
+                print("Bad input incident logged")
+                input()
+                loop = False
+        
+        elif (choice == "6"):
             weight = input("Weight: ")
+            if (not Authentication.is_valid_weight(weight)):
+                print("Invalid weight")
+                input("Press 'Enter' to continue")
+                weight = ""
 
-        elif (choice == "7") :
-            address = input("Address: ")
+        elif (choice == "7"):
+            street_name = ""
+            house_number = ""
+            zip_code = ""
+            city = ""
 
-        elif (choice == "8") :
+            loop_address = True
+            while (loop_address):
+                SharedInterface.clear_console()
+                print("Address")
+                print("--------------------------------------------------")
+                print("[1] Street Name" + street_name)
+                print("[2] House Number" + house_number)
+                print("[3] Zip Code" + zip_code)
+                print("[4] City" + city)
+                print()
+                print("[9] Continue")
+                print("[0] Back")
+                print("--------------------------------------------------")
+                choice_address = input("Select an option: ")
+                print("--------------------------------------------------")
+
+                if (choice_address == "1"):
+                    street_name = input("Street Name: ")
+                    if (not Authentication.is_valid_street_name(street_name)):
+                        print("Invalid street name")
+                        input("Press 'Enter' to continue")
+                        street_name = ""
+
+                elif (choice_address == "2"):
+                    house_number = input("House Number: ")
+                    if (not Authentication.is_valid_house_number(house_number)):
+                        print("Invalid house number")
+                        input("Press 'Enter' to continue")
+                        house_number = ""
+
+                elif (choice_address == "3"):
+                    zip_code = input("Zip Code (DDDDXX): ")
+                    if (not Authentication.is_valid_zip_code(zip_code)):
+                        print("Invalid zip code")
+                        input("Press 'Enter' to continue")
+                        zip_code = ""
+                
+                elif (choice_address == "4"):
+                    print("[1] Almere")
+                    print("[2] Amsterdam")
+                    print("[3] Breda")
+                    print("[4] Den Haag")
+                    print("[5] Eindhoven")
+                    print("[6] Groningen")
+                    print("[7] Nijmegen")
+                    print("[8] Rotterdam")
+                    print("[9] Tilburg")
+                    print("[10] Utrecht")
+
+                    city = input("City: ")
+                    if (city == "1"):
+                        city = "Almere"
+
+                    elif (city == "2"):
+                        city = "Amsterdam"
+
+                    elif (city == "3"):
+                        city = "Breda"
+
+                    elif (city == "4"):
+                        city = "Den Haag"
+
+                    elif (city == "5"):
+                        city = "Eindhoven"
+
+                    elif (city == "6"):
+                        city = "Groningen"
+
+                    elif (city == "7"):
+                        city = "Nijmegen"
+
+                    elif (city == "8"):
+                        city = "Rotterdam"
+
+                    elif (city == "9"):
+                        city = "Tilburg"
+
+                    elif (city == "10"):
+                        city = "Utrecht"
+
+                    else:
+                        print("Invalid option")
+                        input("Press 'Enter' to continue")
+
+                    if (not Authentication.is_valid_city(city)):
+                        print("Bad input incident logged")
+                        input()
+                        loop_address = False
+                        loop = False
+
+                elif (choice_address == "9"):
+                    if (Authentication.is_valid_address(street_name, house_number, zip_code, city)):
+                        address = f"{street_name} {house_number}, {zip_code}, {city}"
+                        loop_address = False
+                    
+                    else:
+                        print("Invalid address")
+                        input("Press 'Enter' to continue")
+                        address = ""
+
+                elif (choice_address == "0"):
+                    loop_address = False
+
+                else:
+                    print("Invalid option")
+                    input("Press 'Enter' to continue")
+
+        elif (choice == "8"):
             email = input("Email: ")
+            if (not Authentication.is_valid_email(email)):
+                print("Invalid email")
+                input("Press 'Enter' to continue")
+                email = ""
 
-        elif (choice == "9") :
-            phone_number = input("Phone Number: ")
+        elif (choice == "9"):
+            phone_number = input("Phone Number: +31-6-")
+            if (Authentication.is_valid_phone_number(phone_number)):
+                phone_number = "+31-6-" + phone_number
+
+            else:
+                print("Invalid phone number")
+                input("Press 'Enter' to continue")
+                phone_number = ""
 
         elif (choice == "10"):
             confirm = input("Type 'modify' to modify member or press 'Enter' to cancel: ")
@@ -556,11 +841,19 @@ def modify_user_screen():
                 print("Invalid Username")
                 input("Press 'Enter' to continue")
 
-        elif (choice == "2") :
+        elif (choice == "2"):
             first_name = input("First Name: ")
+            if (not Authentication.is_valid_name(first_name)):
+                print("Invalid first name")
+                input("Press 'Enter' to continue")
+                first_name = ""
 
-        elif (choice == "3") :
-            last_name = input("Last Name: ")
+        elif (choice == "3"):
+            last_name = input("Last Name: ") 
+            if (not Authentication.is_valid_name(last_name)):
+                print("Invalid last name")
+                input("Press 'Enter' to continue")
+                last_name = ""
 
         elif (choice == "9"):
             confirm = input("Type 'modify' to modify user or press 'Enter' to cancel: ")

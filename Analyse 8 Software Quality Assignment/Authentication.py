@@ -118,7 +118,7 @@ def is_valid_name(name):
         return False
     
 def is_valid_age(age):
-    if (age.isdigit and 10 <= age <= 130):
+    if (age.isdigit() and age > 0):
         return True
     
     else:
@@ -144,7 +144,7 @@ def is_valid_email(email):
 def is_valid_weight(weight):
     try:
         weight = float(weight)
-        if (1 <= weight <= 1000):
+        if (weight > 0):
             return True
         
         else:
@@ -154,9 +154,48 @@ def is_valid_weight(weight):
         return False
     
 def is_valid_gender(gender):
-    genders = ["male", "female", "other"]
+    genders = ["Male", "Female", "Other"]
     
-    if gender.lower() in genders:
+    if gender in genders:
         return True
+    else:
+        return False
+    
+def is_valid_street_name(street_name):
+    if (street_name.isalpha()):
+        return True
+    
+    else:
+        return False
+    
+def is_valid_house_number(house_number):
+    if (house_number.isdigit and house_number > 0):
+        return True
+
+    else:
+        return False
+
+def is_valid_zip_code(zip_code):
+    digits = zip_code[:4]
+    letters = zip_code[4:]
+
+    if (len(zip_code == 6) and digits.isdigit() and letters.isalpha() and letters.isupper()):
+        return True
+    
+    else:
+        return False
+    
+def is_valid_city(city):
+    cities = ["Almere", "Amsterdam", "Breda", "Den Haag", "Eindhoven", "Groningen", "Nijmegen", "Rotterdam", "Tilburg", "Utrecht"]
+
+    if city in cities:
+        return True
+    else:
+        return False
+    
+def is_valid_address(street_name, house_number, zip_code, city):
+    if (street_name != "" and house_number != "" and zip_code != "" and city != ""):
+        return True
+    
     else:
         return False
