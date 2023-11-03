@@ -13,10 +13,10 @@ class Trainer(Member):
         self.last_name = last_name
         self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
 
-    def update_password(self, new_password):
+    def update_password(username, new_password):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("UPDATE users SET password=? WHERE username=?", (new_password, self.username))
+        cursor.execute("UPDATE users SET password=? WHERE username=?", (new_password, username))
         connection.commit()
         connection.close()
 
@@ -37,6 +37,10 @@ class Trainer(Member):
         connection.close()
 
     def search_member(search_key):
+        if (search_key == ""):
+            print("Results: 0")
+            return
+
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM members WHERE id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR address LIKE ? OR email LIKE ? OR phone_number LIKE ?",

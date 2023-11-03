@@ -24,17 +24,3 @@ class SuperAdmin(SystemAdmin):
                         (self.username, hashed_password, self.salt, self.role, self.first_name, self.last_name, self.registration_date))
             connection.commit()
             connection.close()
-
-    def list_members():
-        connection = sqlite3.connect("FitnessPlus.db")
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM members")
-        members = cursor.fetchall()
-        connection.close()
-        
-        count = 0
-        for member in members:
-            count += 1
-            print("(" + str(count) + ")" + " " + str(member))
-        
-        print("Total Members: " + str(count))

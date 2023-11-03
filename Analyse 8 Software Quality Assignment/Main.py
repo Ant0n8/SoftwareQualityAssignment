@@ -4,9 +4,6 @@ import SharedInterface
 import TrainerInterface
 import SystemAdminInterface
 import SuperAdminInterface
-from Member import Member
-from Trainer import Trainer  
-from SystemAdmin import SystemAdmin
 from SuperAdmin import SuperAdmin
 
 
@@ -32,13 +29,12 @@ while (loop):
         current_user_registration_date = current_user[6]
         
         if (current_user_role == "Trainer"):
-            TrainerInterface.trainer_screen()
+            TrainerInterface.trainer_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
 
         elif (current_user_role == "SystemAdmin"):
-            SystemAdminInterface.system_admin_screen()
+            SystemAdminInterface.system_admin_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
 
         elif (current_user_role == "SuperAdmin"):
-            current_user = SuperAdmin()
             SuperAdminInterface.super_admin_screen()
 
     else:

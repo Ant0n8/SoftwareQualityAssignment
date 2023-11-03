@@ -1,19 +1,63 @@
 import SharedInterface
 
 
-def system_admin_screen():
-    SharedInterface.clear_console()
-    print("System Admin Menu")
-    print("[1] Profile")
-    print("[2] Update Password")
-    print("[3] Add Member")
-    print("[4] Modify Member Info")
-    print("[5] Search Member")
+def system_admin_screen(username, password, salt, first_name, last_name, registration_date):
+    loop = True
+    while (loop):
+        SharedInterface.clear_console()
+        print("Trainer Menu")
+        print("--------------------------------------------------")
+        print("[1] Profile")
+        print("[2] Update Password")
+        print()
+        print("[3] Add Member")
+        print("[4] Modify Member")
+        print("[5] Delete Member")
+        print("[6] Search Member")
+        print()
+        print("[7] Add User")
+        print("[8] Modify User")
+        print("[9] Delete User")
+        print("[10] List Users")
+        print()
+        print("[0] Back")
+        print("--------------------------------------------------")
+        choice = input("Select an option: ")
+        print("--------------------------------------------------")
+        
+        if (choice == "1"):
+            SharedInterface.profile_screen(first_name, last_name, registration_date)
+        
+        elif (choice == "2"):
+            SharedInterface.update_password_screen(username, password, salt)
 
-    print("[6] List Users")
-    print("[7] Add Trainer")
-    print("[8] Modify Trainer")
-    print("[9] Reset Trainer Password")
-    print("[10] Backup System")
-    print("[11] Logs")
-    print("[12] Delete Member")
+        elif (choice == "3"):
+            SharedInterface.add_member_screen()
+
+        elif (choice == "4"):
+            SharedInterface.modify_member_screen()
+
+        elif (choice == "5"):
+            SharedInterface.delete_member_screen()
+
+        elif (choice == "6"):
+            SharedInterface.search_member_screen()
+
+        elif (choice == "7"):
+            SharedInterface.add_user_screen()
+
+        elif (choice == "8"):
+            SharedInterface.modify_user_screen()
+
+        elif (choice == "9"):
+            SharedInterface.delete_user_screen()
+        
+        elif (choice == "10"):
+            SharedInterface.list_users_screen()
+
+        elif (choice == "0"):
+            loop = False
+
+        else:
+            print("Invalid option")
+            input("Press 'Enter' to continue")
