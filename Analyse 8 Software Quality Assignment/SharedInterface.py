@@ -125,7 +125,7 @@ def add_member_screen():
                 loop = False
         
         elif (choice == "5"):
-            weight = input("Weight: ")
+            weight = input("Weight (kg): ")
             if (not Authentication.is_valid_weight(weight)):
                 print("Invalid weight")
                 input("Press 'Enter' to continue")
@@ -299,11 +299,20 @@ def add_member_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def add_user_screen():
+def add_user_screen(current_user_role):
     username = ""
     password = ""
     first_name = ""
     last_name = ""
+    role = ""
+    role_print = ""
+
+    if (current_user_role == "SystemAdmin"):
+        role = "Trainer"
+        role_print = "Role: "
+
+    if (current_user_role == "SuperAdmin"):
+        role_print = "[5] Role: " + role
    
     loop = True
     while (loop):
@@ -314,6 +323,7 @@ def add_user_screen():
         print("[2] Password: " + password)
         print("[3] First Name: " + first_name)
         print("[4] Last Name: " + last_name)
+        print(role_print + role)
         print()
         print("[9] Continue")
         print("[0] Back")
@@ -353,18 +363,43 @@ def add_user_screen():
                 print("Invalid last name")
                 input("Press 'Enter' to continue")
                 last_name = ""
+
+        elif (choice == "5" and current_user_role == "SuperAdmin"):
+            loop_role = True
+            while (loop_role):
+                clear_console()
+                print("[1] Trainer")
+                print("[2] SystemAdmin")
+                print("--------------------------------------------------")
+                role = input("Role: ")
+                if (role == "1"):
+                    role = "Trainer"
+                    loop_role = False
+
+                elif (role == "2"):
+                    role = "SystemAdmin"
+                    loop_role = False
+
+                else:
+                    print("Invalid option")
+                    input("Press 'Enter' to continue")
+            
+            if (role != "Trainer" and role != "SystemAdmin"):
+                print("Bad input incident logged")
+                input()
+                loop = False
       
         elif (choice == "9"):
             if (first_name != "" and last_name != ""):
-                confirm = input("Type 'trainer' to add Trainer or 'systemadmin' to add SystemAdmin or press 'Enter' to cancel: ")
-                if (confirm == "trainer"):
+                confirm = input("Type 'yes' to add user or press 'Enter' to cancel: ")
+                if (confirm == "yes" and role == "Trainer"):
                     new_trainer = Trainer(username, password, first_name, last_name)
                     SuperAdmin.add_user(new_trainer)
                     print("Trainer added succesfully")
                     input("Press 'Enter' to continue")
                     loop = False
 
-                elif (confirm == "systemadmin"):
+                elif (confirm == "yes" and role == "SystemAdmin"):
                     new_system_admin = SystemAdmin(username, password, first_name, last_name)
                     SuperAdmin.add_user(new_system_admin)
                     print("SystemAdmin added succesfully")
@@ -378,7 +413,7 @@ def add_user_screen():
             else:
                 print("Not all fields have been filled in")
                 input("Press 'Enter' to continue")
-
+    
         elif (choice == "0"):
             loop = False
 
@@ -483,7 +518,7 @@ def delete_member_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def delete_user_screen():
+def delete_user_screen(current_user_role):
     username = ""
     role = ""
     first_name = ""
@@ -525,15 +560,31 @@ def delete_user_screen():
 
         elif (choice == "9"):
             if (username != ""):
-                confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
-                if (confirm == "delete"):
-                    SuperAdmin.delete_user(username)
-                    print("User deleted succesfully")
-                    input("Press 'Enter' to continue")
-                    loop = False
+                if (current_user_role == "SuperAdmin"):
+                    confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
+                    if (confirm == "delete"):
+                        SuperAdmin.delete_user(username)
+                        print("User deleted succesfully")
+                        input("Press 'Enter' to continue")
+                        loop = False
 
-                else:
-                    print("User not deleted")
+                    else:
+                        print("User not deleted")
+                        input("Press 'Enter' to continue")
+
+                elif (current_user_role == "SystemAdmin" and role == "Trainer"):
+                    if (confirm == "delete"):
+                        SuperAdmin.delete_user(username)
+                        print("User deleted succesfully")
+                        input("Press 'Enter' to continue")
+                        loop = False
+
+                    else:
+                        print("User not deleted")
+                        input("Press 'Enter' to continue")
+
+                elif (current_user_role == "SystemAdmin" and role != "Trainer"):
+                    print("Access denied insufficient authority level")
                     input("Press 'Enter' to continue")
             
             else:
@@ -653,7 +704,7 @@ def modify_member_screen():
                 loop = False
         
         elif (choice == "6"):
-            weight = input("Weight: ")
+            weight = input("Weight (kg): ")
             if (not Authentication.is_valid_weight(weight)):
                 print("Invalid weight")
                 input("Press 'Enter' to continue")
@@ -831,7 +882,7 @@ def modify_member_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def modify_user_screen():
+def modify_user_screen(current_user_role):
     username = ""
     role = ""
     first_name = ""
@@ -888,21 +939,42 @@ def modify_user_screen():
         elif (choice == "9"):
             if (first_name != "" and last_name != ""):
                 confirm = input("Type 'modify' to modify user or press 'Enter' to cancel: ")
-                if (confirm == "modify"):
-                    if (username != ""):
-                        SuperAdmin.modify_user_info(username, first_name, last_name)
-                        print("User modified succesfully")
-                        input("Press 'Enter' to continue")
-                        loop = False
-                    
+                if (current_user_role == "SuperAdmin"):
+                    if (confirm == "modify"):
+                        if (username != ""):
+                            SuperAdmin.modify_user_info(username, first_name, last_name)
+                            print("User modified succesfully")
+                            input("Press 'Enter' to continue")
+                            loop = False
+                        
+                        else:
+                            print("Invalid Username")
+                            input("Press 'Enter' to continue")
+
                     else:
-                        print("Invalid Username")
+                        print("User not modified")
                         input("Press 'Enter' to continue")
 
-                else:
-                    print("User not modified")
+                elif (current_user_role == "SystemAdmin" and role == "Trainer"):
+                    if (confirm == "modify"):
+                        if (username != ""):
+                            SuperAdmin.modify_user_info(username, first_name, last_name)
+                            print("User modified succesfully")
+                            input("Press 'Enter' to continue")
+                            loop = False
+                        
+                        else:
+                            print("Invalid Username")
+                            input("Press 'Enter' to continue")
+
+                    else:
+                        print("User not modified")
+                        input("Press 'Enter' to continue")
+
+                elif (current_user_role == "SystemAdmin" and role != "Trainer"):
+                    print("Access denied insufficient authority level")
                     input("Press 'Enter' to continue")
-            
+
             else:
                 print("Not all fields have been filled in")
                 input("Press 'Enter' to continue")
@@ -961,13 +1033,13 @@ def profile_screen(first_name, last_name, registration_date):
             print("Invalid option")
             input("Press 'Enter' to continue")
         
-def update_password_screen(username, password, salt):
+def update_own_password_screen(username, password, salt):
     new_password = ""
 
     loop = True
     while (loop):
         clear_console()
-        print("Update Password")
+        print("Update Own Password")
         print("--------------------------------------------------")
         print("[1] New Password: " + new_password)
         print()
@@ -1002,6 +1074,89 @@ def update_password_screen(username, password, salt):
             else:
                 print("Password not updated")
                 input("Press 'Enter' to continue")
+
+        else:
+            print("Invalid option")
+            input("Press 'Enter' to continue")
+
+def update_user_password_screen(password, salt, role):
+    username = ""
+    new_password = ""
+
+    loop = True
+    while (loop):
+        clear_console()
+        print("Update User Password")
+        print("--------------------------------------------------")
+        print("[1] Username: " + username)
+        print("[2] New Password: " + new_password)
+        print()
+        print("[9] Continue")
+        print("[0] Back")
+        print("--------------------------------------------------")
+        choice = input("Select an option: ")
+        print("--------------------------------------------------")
+
+        if (choice == "1"):
+            username = input("Username: ")
+            if (not Authentication.is_valid_username(username)):
+                print("Invalid Username")
+                input("Press 'Enter' to continue")
+                username = ""
+
+        elif (choice == "2"):
+            new_password = input("New Password: ")
+            if(not Authentication.is_valid_password(new_password)):
+                print("Invalid Password")
+                input("Press 'Enter' to continue")
+                new_password = ""
+
+        elif (choice == "0"):
+            loop = False
+
+        elif (choice == "9"):
+            confirm = input("Enter own password to update user password or press 'Enter' to cancel: ")
+            if (username != "" and Authentication.is_valid_username(username) and role == "SuperAdmin"):
+                user_salt = Authentication.get_user_salt(username)
+                if (Authentication.hash_password(confirm, salt) == Authentication.hash_password(password, salt) and Authentication.is_valid_password(new_password)):
+                    SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
+                    print("Password succesfully updated")
+                    input("Press 'Enter' to continue")
+                    loop = False
+
+                elif (Authentication.hash_password(confirm, salt) != Authentication.hash_password(password, salt) and confirm != ""):
+                    print("Invalid Password")
+                    input("Press 'Enter' to continue")
+
+                else:
+                    print("Password not updated")
+                    input("Press 'Enter' to continue")
+            
+            elif (username != "" and Authentication.is_valid_username(username) and role == "SystemAdmin"):
+                if (Authentication.role_check(username) == "Trainer"):
+                    user_salt = Authentication.get_user_salt(username)
+                    if (Authentication.hash_password(confirm, salt) == Authentication.hash_password(password, salt) and Authentication.is_valid_password(new_password)):
+                        SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
+                        print("Password succesfully updated")
+                        input("Press 'Enter' to continue")
+                        loop = False
+
+                    elif (Authentication.hash_password(confirm, salt) != Authentication.hash_password(password, salt) and confirm != ""):
+                        print("Invalid Password")
+                        input("Press 'Enter' to continue")
+
+                    else:
+                        print("Password not updated")
+                        input("Press 'Enter' to continue")
+                
+                else:
+                    print("Access denied insufficient authority level")
+                    input("Press 'Enter' to continue")
+
+            else:
+                print("Invalid Username")
+                input("Press 'Enter' to continue")
+                username = ""
 
         else:
             print("Invalid option")

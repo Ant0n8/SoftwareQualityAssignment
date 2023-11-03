@@ -1,7 +1,7 @@
 import SharedInterface
 
 
-def super_admin_screen():
+def super_admin_screen(password, salt, role):
     loop = True
     while (loop):
         SharedInterface.clear_console()
@@ -16,6 +16,7 @@ def super_admin_screen():
         print("[6] Modify User")
         print("[7] Delete User")
         print("[8] List Users")
+        print("[9] Update User Password")
         print()
         print("[0] Back")
         print("--------------------------------------------------")
@@ -35,16 +36,19 @@ def super_admin_screen():
             SharedInterface.search_member_screen()
 
         elif (choice == "5"):
-            SharedInterface.add_user_screen()
+            SharedInterface.add_user_screen(role)
 
         elif (choice == "6"):
-            SharedInterface.modify_user_screen()
+            SharedInterface.modify_user_screen(role)
 
         elif (choice == "7"):
-            SharedInterface.delete_user_screen()
+            SharedInterface.delete_user_screen(role)
         
         elif (choice == "8"):
             SharedInterface.list_users_screen()
+
+        elif (choice == "9"):
+            SharedInterface.update_user_password_screen(password, salt, role)
 
         elif (choice == "0"):
             loop = False

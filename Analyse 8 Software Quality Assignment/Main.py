@@ -32,10 +32,10 @@ while (loop):
             TrainerInterface.trainer_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
 
         elif (current_user_role == "SystemAdmin"):
-            SystemAdminInterface.system_admin_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
+            SystemAdminInterface.system_admin_screen(current_user_username, current_user_password, current_user_salt, current_user_role, current_user_first_name, current_user_last_name, current_user_registration_date)
 
         elif (current_user_role == "SuperAdmin"):
-            SuperAdminInterface.super_admin_screen()
+            SuperAdminInterface.super_admin_screen(current_user_password, current_user_salt, current_user_role)
 
     else:
         print("Invalid username or password")

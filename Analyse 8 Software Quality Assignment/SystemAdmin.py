@@ -23,6 +23,9 @@ class SystemAdmin(Trainer):
         
         count = 0
         for user in users:
+            if (user[3] == "SuperAdmin"):
+                continue
+            
             count += 1
             print(f"{str(count).ljust(5)} {user[0].ljust(15)} {user[3].ljust(15)} {user[4].ljust(15)} {user[5].ljust(15)} {user[6]}")
         

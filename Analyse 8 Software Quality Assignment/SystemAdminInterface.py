@@ -1,14 +1,14 @@
 import SharedInterface
 
 
-def system_admin_screen(username, password, salt, first_name, last_name, registration_date):
+def system_admin_screen(username, password, salt, role, first_name, last_name, registration_date):
     loop = True
     while (loop):
         SharedInterface.clear_console()
         print("Trainer Menu")
         print("--------------------------------------------------")
         print("[1] Profile")
-        print("[2] Update Password")
+        print("[2] Update Own Password")
         print()
         print("[3] Add Member")
         print("[4] Modify Member")
@@ -19,6 +19,7 @@ def system_admin_screen(username, password, salt, first_name, last_name, registr
         print("[8] Modify User")
         print("[9] Delete User")
         print("[10] List Users")
+        print("[11] Update User Password")
         print()
         print("[0] Back")
         print("--------------------------------------------------")
@@ -29,7 +30,7 @@ def system_admin_screen(username, password, salt, first_name, last_name, registr
             SharedInterface.profile_screen(first_name, last_name, registration_date)
         
         elif (choice == "2"):
-            SharedInterface.update_password_screen(username, password, salt)
+            SharedInterface.update_own_password_screen(username, password, salt)
 
         elif (choice == "3"):
             SharedInterface.add_member_screen()
@@ -44,16 +45,19 @@ def system_admin_screen(username, password, salt, first_name, last_name, registr
             SharedInterface.search_member_screen()
 
         elif (choice == "7"):
-            SharedInterface.add_user_screen()
+            SharedInterface.add_user_screen(role)
 
         elif (choice == "8"):
-            SharedInterface.modify_user_screen()
+            SharedInterface.modify_user_screen(role)
 
         elif (choice == "9"):
-            SharedInterface.delete_user_screen()
+            SharedInterface.delete_user_screen(role)
         
         elif (choice == "10"):
             SharedInterface.list_users_screen()
+
+        elif (choice == "11"):
+            SharedInterface.update_user_password_screen(password, salt, role)
 
         elif (choice == "0"):
             loop = False

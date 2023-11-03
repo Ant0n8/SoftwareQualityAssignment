@@ -37,6 +37,14 @@ def get_user_info(username):
     connection.close()
     return user_data
 
+def get_user_salt(username):
+    connection = sqlite3.connect("FitnessPlus.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT salt FROM users WHERE username = ?", (username,))
+    user_data = cursor.fetchone()
+    connection.close()
+    return user_data
+
 def role_check(username):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
@@ -89,7 +97,7 @@ def hash_password(password, salt):
     return hashed_password
 
 def is_valid_phone_number(phone_number):
-    if phone_number.isdigit() and len(phone_number) == 7:
+    if phone_number.isdigit() and len(phone_number) == 8:
         return True
     
     else:
