@@ -1118,7 +1118,8 @@ def update_user_password_screen(role):
         elif (choice == "9"):
             confirm = input("Enter 'yes' to update user password or press 'Enter' to cancel: ")
             if (username != "" and Authentication.username_exists(username) and role == "SuperAdmin"):
-                user_salt = Authentication.get_user_salt(username)
+                user_info = Authentication.get_user_info(username)
+                user_salt = user_info[2]
                 if (confirm == "yes" and Authentication.is_valid_password(new_password)):
                     SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
                     print("Password succesfully updated")
@@ -1135,7 +1136,8 @@ def update_user_password_screen(role):
             
             elif (username != "" and Authentication.username_exists(username) and role == "SystemAdmin"):
                 if (Authentication.role_check(username) == "Trainer"):
-                    user_salt = Authentication.get_user_salt(username)
+                    user_info = Authentication.get_user_info(username)
+                    user_salt = user_info[2]
                     if (confirm == "yes" and Authentication.is_valid_password(new_password)):
                         SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
                         print("Password succesfully updated")

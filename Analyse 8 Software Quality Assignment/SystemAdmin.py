@@ -18,8 +18,19 @@ class SystemAdmin(Trainer):
     def delete_member(id):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("DELETE FROM members WHERE id=?", (id,))
-        connection.commit()
+        cursor.execute("SELECT * FROM members")
+        member_data = cursor.fetchall()
+
+        if (member_data):
+            for data in member_data:
+                encrypted_id = data
+
+                decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
+                
+                if (decrypted_id == id):
+                    cursor.execute("DELETE FROM members WHERE id=?", (encrypted_id,))
+                    connection.commit()
+
         connection.close()
 
     def list_users():
@@ -34,7 +45,7 @@ class SystemAdmin(Trainer):
         for user in users:
             count += 1
 
-            encrypted_username, encrypted_password, encrypted_salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user
+            encrypted_username, password, salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user
         
             decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
             decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
@@ -51,8 +62,6 @@ class SystemAdmin(Trainer):
         hashed_password = Authentication.hash_password(user.password, user.salt)
 
         encrypted_username = Encryption.encrypt_data(Encryption.get_public_key(), user.username.encode('utf-8'))
-        encrypted_password = Encryption.encrypt_data(Encryption.get_public_key(), hashed_password)
-        encrypted_salt = Encryption.encrypt_data(Encryption.get_public_key(), user.salt.encode('utf-8'))
         encrypted_role = Encryption.encrypt_data(Encryption.get_public_key(), user.role.encode('utf-8'))
         encrypted_first_name = Encryption.encrypt_data(Encryption.get_public_key(), user.first_name.encode('utf-8'))
         encrypted_last_name = Encryption.encrypt_data(Encryption.get_public_key(), user.last_name.encode('utf-8'))
@@ -61,7 +70,7 @@ class SystemAdmin(Trainer):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
         cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                       (encrypted_username, encrypted_password, encrypted_salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date))
+                       (encrypted_username, hashed_password, user.salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date))
         connection.commit()
         connection.close()
 
@@ -71,16 +80,38 @@ class SystemAdmin(Trainer):
 
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("UPDATE users SET first_name=?, last_name=? WHERE username=?", 
-                       (encrypted_first_name, encrypted_last_name, username))
-        connection.commit()
+        cursor.execute("SELECT * FROM users")
+        user_data = cursor.fetchall()
+
+        if (user_data):
+            for data in user_data:
+                encrypted_username = data
+
+                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username.encode('utf-8'))
+                
+                if (decrypted_username == username):
+                    cursor.execute("UPDATE users SET first_name=?, last_name=? WHERE username=?", 
+                                (encrypted_first_name, encrypted_last_name, encrypted_username))
+                    connection.commit()
+        
         connection.close()
 
     def delete_user(username):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("DELETE FROM users WHERE username=?", (username,))
-        connection.commit()
+        cursor.execute("SELECT * FROM users")
+        user_data = cursor.fetchall()
+
+        if (user_data):
+            for data in user_data:
+                encrypted_username = data
+
+                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username.encode('utf-8'))
+                
+                if (decrypted_username == username):
+                    cursor.execute("DELETE FROM users WHERE username=?", (encrypted_username,))
+                    connection.commit()
+
         connection.close()
 
     # def backup_system(self):

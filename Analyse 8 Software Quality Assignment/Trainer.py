@@ -15,12 +15,22 @@ class Trainer(Member):
         self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
 
     def update_password(username, new_password):
-        encrypted_new_password = Encryption.encrypt_data(Encryption.get_public_key(), new_password)
-
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("UPDATE users SET password=? WHERE username=?", (encrypted_new_password, username))
-        connection.commit()
+        cursor.execute("SELECT username FROM users")
+        user_data = cursor.fetchall()
+
+        if (user_data):
+            for data in user_data:
+                encrypted_username = data
+                
+                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
+
+                if (decrypted_username == username):
+                    cursor.execute("UPDATE users SET password=? WHERE username=?", (new_password, encrypted_username))
+                    connection.commit()
+                    break
+                
         connection.close()
 
     def add_member(member):
@@ -55,9 +65,21 @@ class Trainer(Member):
 
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("UPDATE members SET first_name=?, last_name=?, age=?, gender=?, weight=?, address=?, email=?, phone_number=? WHERE id=?",
-            (encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number, id))
-        connection.commit()
+        cursor.execute("SELECT * FROM members")
+        member_data = cursor.fetchall()
+
+        if (member_data):
+            for data in member_data:
+                encrypted_id = data
+
+                decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
+                
+                if (decrypted_id == id):
+                    cursor.execute("UPDATE members SET first_name=?, last_name=?, age=?, gender=?, weight=?, address=?, email=?, phone_number=? WHERE id=?",
+                        (encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number, encrypted_id))
+                    connection.commit()
+                    break
+
         connection.close()
 
     def search_member(search_key):

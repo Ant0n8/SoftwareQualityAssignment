@@ -6,123 +6,118 @@ import Encryption
 def login(username, password):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
-
-    cursor.execute("SELECT password, salt FROM users WHERE username = ?", (username,))
-    user_data = cursor.fetchone()
+    cursor.execute("SELECT username, password, salt FROM users")
+    user_data = cursor.fetchall()
     connection.close()
 
-    if (user_data):
-        encrypted_password, encrypted_salt = user_data
+    if(user_data):
+        for data in user_data:
+            encrypted_username, stored_password, stored_salt = data
 
-        decrypted_salt = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_salt).decode('utf-8')
-        decrypted_password = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_password)
+            decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
 
-        user_data = (decrypted_password, decrypted_salt)
+            if (decrypted_username == username):
+                hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), stored_salt.encode('utf-8'), 100000)
 
-    else:
-        return False
+                if (hashed_password == stored_password):
+                    return True
+                else:
+                    return False
 
-    stored_password, stored_salt = user_data
-    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), stored_salt.encode('utf-8'), 100000)
+    return False
 
-    if (hashed_password == stored_password):
-        return True
-    else:
-        return False
     
 def get_member_info(id):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM members WHERE id=?", (id,))
-    member_data = cursor.fetchone()
+    cursor.execute("SELECT * FROM members")
+    member_data = cursor.fetchall()
     connection.close()
 
     if (member_data):
-        encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number = member_data
+        for data in member_data:
+            encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number = data
 
-        decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date.encode('utf-8'))
-        decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
-        decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role.encode('utf-8'))
-        decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name.encode('utf-8'))
-        decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name.encode('utf-8'))
-        decrypted_age = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_age.encode('utf-8'))
-        decrypted_gender = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_gender.encode('utf-8'))
-        decrypted_weight = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_weight.encode('utf-8'))
-        decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address.encode('utf-8'))
-        decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email.encode('utf-8'))
-        decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number.encode('utf-8'))
+            decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
+            
+            if (decrypted_id == id):
+                decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date.encode('utf-8'))
+                decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role.encode('utf-8'))
+                decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name.encode('utf-8'))
+                decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name.encode('utf-8'))
+                decrypted_age = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_age.encode('utf-8'))
+                decrypted_gender = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_gender.encode('utf-8'))
+                decrypted_weight = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_weight.encode('utf-8'))
+                decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address.encode('utf-8'))
+                decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email.encode('utf-8'))
+                decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number.encode('utf-8'))
 
-        member_data = (decrypted_registration_date, decrypted_id, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_age, decrypted_gender, decrypted_weight, decrypted_address, decrypted_email, decrypted_phone_number)
+                member_data = (decrypted_registration_date, decrypted_id, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_age, decrypted_gender, decrypted_weight, decrypted_address, decrypted_email, decrypted_phone_number)
+                break
 
     return member_data
 
 def get_user_info(username):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM users WHERE username=?", (username,))
-    user_data = cursor.fetchone()
+    cursor.execute("SELECT * FROM users")
+    user_data = cursor.fetchall()
     connection.close()
 
     if (user_data):
-        encrypted_username, encrypted_password, encrypted_salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user_data
-        
-        decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
-        decrypted_password = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_password)
-        decrypted_salt = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_salt).decode('utf-8')
-        decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
-        decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name).decode('utf-8')
-        decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')
-        decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
+        for data in user_data:
+            encrypted_username, password, salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = data
+            
+            decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
 
-        user_data = (decrypted_username, decrypted_password, decrypted_salt, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_registration_date)
+            if (decrypted_username == username):
+                decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
+                decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name).decode('utf-8')
+                decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')
+                decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
 
-    return user_data
-
-def get_user_salt(username):
-    connection = sqlite3.connect("FitnessPlus.db")
-    cursor = connection.cursor()
-    cursor.execute("SELECT salt FROM users WHERE username = ?", (username,))
-    user_data = cursor.fetchone()
-    connection.close()
-
-    if (user_data):
-        encrypted_salt = user_data
-
-        decrypted_salt = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_salt).decode('utf-8')
-
-        user_data = decrypted_salt
+                user_data = (decrypted_username, password, salt, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_registration_date)
+                break
 
     return user_data
 
 def role_check(username):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
-
-    cursor.execute("SELECT role FROM users WHERE username = ?", (username,))
-    user_data = cursor.fetchone()
+    cursor.execute("SELECT username, role FROM users")
+    user_data = cursor.fetchall()
     connection.close()
     
     if (user_data):
-        encrypted_role = user_data
+        for data in user_data:
+            encrypted_username, encrypted_role = data
 
-        decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
+            decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
 
-        user_data = decrypted_role
+            if (decrypted_username == username):
+                decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
+                user_data = decrypted_role
+                break
 
     return user_data
 
 def username_exists(username):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM users WHERE username = ?", (username,))
-    user_count = cursor.fetchone()[0]
-
-    if user_count > 0:
-        connection.close()
-        return True
-    
+    cursor.execute("SELECT username FROM users")
+    user_data = cursor.fetchall()
     connection.close
+
+    if (user_data):
+        for data in user_data:
+            encrypted_username = data
+
+            decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
+
+            if (decrypted_username == username):
+                return True
+            break
+    
     return False
 
 def hash_password(password, salt):

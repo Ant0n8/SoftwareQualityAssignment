@@ -20,8 +20,6 @@ class SuperAdmin(SystemAdmin):
             hashed_password = Authentication.hash_password(self.password, self.salt)
 
             encrypted_username = Encryption.encrypt_data(Encryption.get_public_key(), self.username.encode('utf-8'))
-            encrypted_password = Encryption.encrypt_data(Encryption.get_public_key(), hashed_password)
-            encrypted_salt = Encryption.encrypt_data(Encryption.get_public_key(), self.salt.encode('utf-8'))
             encrypted_role = Encryption.encrypt_data(Encryption.get_public_key(), self.role.encode('utf-8'))
             encrypted_first_name = Encryption.encrypt_data(Encryption.get_public_key(), self.first_name.encode('utf-8'))
             encrypted_last_name = Encryption.encrypt_data(Encryption.get_public_key(), self.last_name.encode('utf-8'))
@@ -30,6 +28,6 @@ class SuperAdmin(SystemAdmin):
             connection = sqlite3.connect("FitnessPlus.db")
             cursor = connection.cursor()
             cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                        (encrypted_username, encrypted_password, encrypted_salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date))
+                        (encrypted_username, hashed_password, self.salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date))
             connection.commit()
             connection.close()
