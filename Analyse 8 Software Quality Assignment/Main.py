@@ -5,6 +5,7 @@ import TrainerInterface
 import SystemAdminInterface
 import SuperAdminInterface
 import Encryption
+import Logging
 from SuperAdmin import SuperAdmin
 
 
@@ -12,6 +13,7 @@ Encryption.generate_keys()
 Database.create_database()
 super_admin = SuperAdmin()
 super_admin.add_super_admin()
+logger = Logging.setup_logging()
 
 loop = True
 while (loop):
@@ -29,7 +31,10 @@ while (loop):
         current_user_first_name = current_user[4]
         current_user_last_name = current_user[5]
         current_user_registration_date = current_user[6]
-        
+
+        # Log succesful login attempt
+        logger.info(f"{current_user_username} Logged in No")
+
         if (current_user_role == "Trainer"):
             TrainerInterface.trainer_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
 
