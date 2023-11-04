@@ -48,9 +48,10 @@ class Trainer(Member):
         members = cursor.fetchall()
         connection.close()
         
+        print(f"{'ID'.ljust(15)} {'Firstname'.ljust(15)} {'LastName'.ljust(15)} {'Age'.ljust(15)} {'Gender'.ljust(15)} {'Weight'.ljust(15)} {'Address'.ljust(30)} {'Email'.ljust(25)} {'Phone Number'.ljust(15)} {'Registration Date'}\n")
         number = 0
         for member in members:
             number += 1
-            print("(" + str(number) + ")" + " " + str(member))
+            print(f"{str(member[0]).ljust(15)} {member[2].ljust(15)} {member[3].ljust(15)} {str(member[4]).ljust(15)} {member[5].ljust(15)} {str(member[6]).ljust(15)} {member[7].ljust(30)} {member[8].ljust(25)} {member[9].ljust(15)} {member[10]}")
 
-        print("Results: " + str(number))
+        print("\nResults: " + str(number))

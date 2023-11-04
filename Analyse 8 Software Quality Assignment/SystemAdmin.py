@@ -17,15 +17,13 @@ class SystemAdmin(Trainer):
     def list_users():
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT * FROM users WHERE role != 'SuperAdmin'")
         users = cursor.fetchall()
         connection.close()
         
+        print(f"{' '.ljust(5)} {'Username'.ljust(15)} {'Role'.ljust(15)} {'Firstname'.ljust(15)} {'Lastname'.ljust(15)} {'Registration Date'}\n")
         count = 0
         for user in users:
-            if (user[3] == "SuperAdmin"):
-                continue
-            
             count += 1
             print(f"{str(count).ljust(5)} {user[0].ljust(15)} {user[3].ljust(15)} {user[4].ljust(15)} {user[5].ljust(15)} {user[6]}")
         

@@ -1,4 +1,5 @@
 import os
+import sys
 import Authentication
 from Member import Member
 from Trainer import Trainer
@@ -19,7 +20,7 @@ def login_screen():
         print("Sign In")
         print("--------------------------------------------------")
         print("[1] Username: " + username)
-        print("[2] Password: " + password)
+        print("[2] Password: " + '*' * len(password))
         print()
         print("[9] Continue")
         print("[0] Exit")
@@ -31,7 +32,7 @@ def login_screen():
             username = input("Username: ")
 
         elif (choice == "2"):
-            password = input("Password: ")  
+            password = input("Password: ")
 
         elif (choice == "9"):
             return (username, password)
@@ -74,14 +75,14 @@ def add_member_screen():
         print("--------------------------------------------------")
 
         if (choice == "1"):
-            first_name = input("First Name: ")
+            first_name = input("First Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(first_name)):
                 print("Invalid first name")
                 input("Press 'Enter' to continue")
                 first_name = ""
 
         elif (choice == "2"):
-            last_name = input("Last Name: ") 
+            last_name = input("Last Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(last_name)):
                 print("Invalid last name")
                 input("Press 'Enter' to continue")
@@ -154,7 +155,7 @@ def add_member_screen():
                 print("--------------------------------------------------")
 
                 if (choice_address == "1"):
-                    street_name = input("Street Name: ")
+                    street_name = input("Street Name: ").lower().capitalize()
                     if (not Authentication.is_valid_street_name(street_name)):
                         print("Invalid street name")
                         input("Press 'Enter' to continue")
@@ -168,7 +169,7 @@ def add_member_screen():
                         house_number = ""
 
                 elif (choice_address == "3"):
-                    zip_code = input("Zip Code (DDDDXX): ")
+                    zip_code = input("Zip Code (DDDDXX): ").upper()
                     if (not Authentication.is_valid_zip_code(zip_code)):
                         print("Invalid zip code")
                         input("Press 'Enter' to continue")
@@ -258,7 +259,7 @@ def add_member_screen():
                     input("Press 'Enter' to continue")
 
         elif (choice == "7"):
-            email = input("Email: ")
+            email = input("Email: ").lower()
             if (not Authentication.is_valid_email(email)):
                 print("Invalid email")
                 input("Press 'Enter' to continue")
@@ -351,14 +352,14 @@ def add_user_screen(current_user_role):
                 password = ""
 
         elif (choice == "3"):
-            first_name = input("First Name: ")
+            first_name = input("First Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(first_name)):
                 print("Invalid first name")
                 input("Press 'Enter' to continue")
                 first_name = ""
 
         elif (choice == "4"):
-            last_name = input("Last Name: ") 
+            last_name = input("Last Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(last_name)):
                 print("Invalid last name")
                 input("Press 'Enter' to continue")
@@ -424,6 +425,7 @@ def add_user_screen(current_user_role):
 def list_users_screen():
     loop = True
     while (loop):
+        clear_console()
         print("List Users")
         print("--------------------------------------------------")
         SuperAdmin.list_users()
@@ -653,14 +655,14 @@ def modify_member_screen():
                 input("Press 'Enter' to continue")
 
         elif (choice == "2"):
-            first_name = input("First Name: ")
+            first_name = input("First Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(first_name)):
                 print("Invalid first name")
                 input("Press 'Enter' to continue")
                 first_name = ""
 
         elif (choice == "3"):
-            last_name = input("Last Name: ") 
+            last_name = input("Last Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(last_name)):
                 print("Invalid last name")
                 input("Press 'Enter' to continue")
@@ -733,7 +735,7 @@ def modify_member_screen():
                 print("--------------------------------------------------")
 
                 if (choice_address == "1"):
-                    street_name = input("Street Name: ")
+                    street_name = input("Street Name: ").lower().capitalize()
                     if (not Authentication.is_valid_street_name(street_name)):
                         print("Invalid street name")
                         input("Press 'Enter' to continue")
@@ -747,7 +749,7 @@ def modify_member_screen():
                         house_number = ""
 
                 elif (choice_address == "3"):
-                    zip_code = input("Zip Code (DDDDXX): ")
+                    zip_code = input("Zip Code (DDDDXX): ").upper()
                     if (not Authentication.is_valid_zip_code(zip_code)):
                         print("Invalid zip code")
                         input("Press 'Enter' to continue")
@@ -837,7 +839,7 @@ def modify_member_screen():
                     input("Press 'Enter' to continue")
 
         elif (choice == "8"):
-            email = input("Email: ")
+            email = input("Email: ").lower()
             if (not Authentication.is_valid_email(email)):
                 print("Invalid email")
                 input("Press 'Enter' to continue")
@@ -923,14 +925,14 @@ def modify_user_screen(current_user_role):
                 input("Press 'Enter' to continue")
 
         elif (choice == "2"):
-            first_name = input("First Name: ")
+            first_name = input("First Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(first_name)):
                 print("Invalid first name")
                 input("Press 'Enter' to continue")
                 first_name = ""
 
         elif (choice == "3"):
-            last_name = input("Last Name: ") 
+            last_name = input("Last Name: ").lower().capitalize()
             if (not Authentication.is_valid_name(last_name)):
                 print("Invalid last name")
                 input("Press 'Enter' to continue")
@@ -1140,7 +1142,6 @@ def update_user_password_screen(password, salt, role):
                         print("Password succesfully updated")
                         input("Press 'Enter' to continue")
                         loop = False
-
                     elif (Authentication.hash_password(confirm, salt) != Authentication.hash_password(password, salt) and confirm != ""):
                         print("Invalid Password")
                         input("Press 'Enter' to continue")
