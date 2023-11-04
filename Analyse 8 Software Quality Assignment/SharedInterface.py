@@ -1,5 +1,4 @@
 import os
-import sys
 import Authentication
 from Member import Member
 from Trainer import Trainer
