@@ -1,19 +1,28 @@
 import hashlib
 import sqlite3
+import Encryption
 
 
 def login(username, password):
     connection = sqlite3.connect("FitnessPlus.db")
     cursor = connection.cursor()
 
-    cursor.execute("SELECT salt, password FROM users WHERE username = ?", (username,))
+    cursor.execute("SELECT password, salt FROM users WHERE username = ?", (username,))
     user_data = cursor.fetchone()
     connection.close()
 
-    if user_data is None:
+    if (user_data):
+        encrypted_password, encrypted_salt = user_data
+
+        decrypted_salt = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_salt).decode('utf-8')
+        decrypted_password = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_password)
+
+        user_data = (decrypted_password, decrypted_salt)
+
+    else:
         return False
 
-    stored_salt, stored_password = user_data
+    stored_password, stored_salt = user_data
     hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), stored_salt.encode('utf-8'), 100000)
 
     if (hashed_password == stored_password):
@@ -27,6 +36,24 @@ def get_member_info(id):
     cursor.execute("SELECT * FROM members WHERE id=?", (id,))
     member_data = cursor.fetchone()
     connection.close()
+
+    if (member_data):
+        encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number = member_data
+
+        decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date.encode('utf-8'))
+        decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
+        decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role.encode('utf-8'))
+        decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name.encode('utf-8'))
+        decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name.encode('utf-8'))
+        decrypted_age = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_age.encode('utf-8'))
+        decrypted_gender = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_gender.encode('utf-8'))
+        decrypted_weight = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_weight.encode('utf-8'))
+        decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address.encode('utf-8'))
+        decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email.encode('utf-8'))
+        decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number.encode('utf-8'))
+
+        member_data = (decrypted_registration_date, decrypted_id, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_age, decrypted_gender, decrypted_weight, decrypted_address, decrypted_email, decrypted_phone_number)
+
     return member_data
 
 def get_user_info(username):
@@ -35,6 +62,20 @@ def get_user_info(username):
     cursor.execute("SELECT * FROM users WHERE username=?", (username,))
     user_data = cursor.fetchone()
     connection.close()
+
+    if (user_data):
+        encrypted_username, encrypted_password, encrypted_salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user_data
+        
+        decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
+        decrypted_password = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_password)
+        decrypted_salt = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_salt).decode('utf-8')
+        decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
+        decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name).decode('utf-8')
+        decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')
+        decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
+
+        user_data = (decrypted_username, decrypted_password, decrypted_salt, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_registration_date)
+
     return user_data
 
 def get_user_salt(username):
@@ -43,6 +84,14 @@ def get_user_salt(username):
     cursor.execute("SELECT salt FROM users WHERE username = ?", (username,))
     user_data = cursor.fetchone()
     connection.close()
+
+    if (user_data):
+        encrypted_salt = user_data
+
+        decrypted_salt = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_salt).decode('utf-8')
+
+        user_data = decrypted_salt
+
     return user_data
 
 def role_check(username):
@@ -52,7 +101,33 @@ def role_check(username):
     cursor.execute("SELECT role FROM users WHERE username = ?", (username,))
     user_data = cursor.fetchone()
     connection.close()
+    
+    if (user_data):
+        encrypted_role = user_data
+
+        decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
+
+        user_data = decrypted_role
+
     return user_data
+
+def username_exists(username):
+    connection = sqlite3.connect("FitnessPlus.db")
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM users WHERE username = ?", (username,))
+    user_count = cursor.fetchone()[0]
+
+    if user_count > 0:
+        connection.close()
+        return True
+    
+    connection.close
+    return False
+
+def hash_password(password, salt):
+    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
+    return hashed_password
 
 def is_valid_username(username):
     if 8 <= len(username) <= 12 and (username[0].isalpha() or username[0] == "_") and all(char.isalnum() or char in "_'." for char in username[1:]):
@@ -77,24 +152,6 @@ def is_valid_password(password):
         
     else:
         return False
-
-def username_exists(username):
-    connection = sqlite3.connect("FitnessPlus.db")
-    cursor = connection.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM users WHERE username = ?", (username,))
-    user_count = cursor.fetchone()[0]
-
-    if user_count > 0:
-        connection.close()
-        return True
-    
-    connection.close
-    return False
-
-def hash_password(password, salt):
-    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
-    return hashed_password
 
 def is_valid_phone_number(phone_number):
     if phone_number.isdigit() and len(phone_number) == 8:

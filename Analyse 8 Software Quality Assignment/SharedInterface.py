@@ -1080,7 +1080,7 @@ def update_own_password_screen(username, password, salt):
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def update_user_password_screen(password, salt, role):
+def update_user_password_screen(role):
     username = ""
     new_password = ""
 
@@ -1100,7 +1100,7 @@ def update_user_password_screen(password, salt, role):
 
         if (choice == "1"):
             username = input("Username: ")
-            if (not Authentication.is_valid_username(username)):
+            if (not Authentication.username_exists(username)):
                 print("Invalid Username")
                 input("Press 'Enter' to continue")
                 username = ""
@@ -1116,16 +1116,16 @@ def update_user_password_screen(password, salt, role):
             loop = False
 
         elif (choice == "9"):
-            confirm = input("Enter own password to update user password or press 'Enter' to cancel: ")
-            if (username != "" and Authentication.is_valid_username(username) and role == "SuperAdmin"):
+            confirm = input("Enter 'yes' to update user password or press 'Enter' to cancel: ")
+            if (username != "" and Authentication.username_exists(username) and role == "SuperAdmin"):
                 user_salt = Authentication.get_user_salt(username)
-                if (Authentication.hash_password(confirm, salt) == Authentication.hash_password(password, salt) and Authentication.is_valid_password(new_password)):
+                if (confirm == "yes" and Authentication.is_valid_password(new_password)):
                     SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
                     print("Password succesfully updated")
                     input("Press 'Enter' to continue")
                     loop = False
 
-                elif (Authentication.hash_password(confirm, salt) != Authentication.hash_password(password, salt) and confirm != ""):
+                elif (confirm == "yes" and not Authentication.is_valid_password(new_password)):
                     print("Invalid Password")
                     input("Press 'Enter' to continue")
 
@@ -1133,15 +1133,16 @@ def update_user_password_screen(password, salt, role):
                     print("Password not updated")
                     input("Press 'Enter' to continue")
             
-            elif (username != "" and Authentication.is_valid_username(username) and role == "SystemAdmin"):
+            elif (username != "" and Authentication.username_exists(username) and role == "SystemAdmin"):
                 if (Authentication.role_check(username) == "Trainer"):
                     user_salt = Authentication.get_user_salt(username)
-                    if (Authentication.hash_password(confirm, salt) == Authentication.hash_password(password, salt) and Authentication.is_valid_password(new_password)):
+                    if (confirm == "yes" and Authentication.is_valid_password(new_password)):
                         SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
                         print("Password succesfully updated")
                         input("Press 'Enter' to continue")
                         loop = False
-                    elif (Authentication.hash_password(confirm, salt) != Authentication.hash_password(password, salt) and confirm != ""):
+
+                    elif (confirm == "yes" and not Authentication.is_valid_password(new_password)):
                         print("Invalid Password")
                         input("Press 'Enter' to continue")
 

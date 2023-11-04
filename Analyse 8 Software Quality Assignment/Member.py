@@ -3,7 +3,7 @@ import datetime
 
 class Member:
     def __init__(self, first_name, last_name, age, gender, weight, address, email, phone_number):
-        self.registration_date = datetime.date.today()
+        self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
         self.id = self.generate_id()
         self.role = "Member"
         self.first_name = first_name
@@ -15,13 +15,6 @@ class Member:
         self.email = email
         self.phone_number = phone_number
 
-    def generate_id(self):
-        registration_year = self.registration_date.year % 100
-        id = f"{registration_year}{random.randint(10, 99)}{random.randint(100, 999)}"
-        checksum = sum(int(digit) for digit in id) % 10
-        id += str(checksum)
-        return id
-    
     def generate_id():
         current_year = datetime.now().year % 100
         random_digits = [str(random.randint(0, 9)) for _ in range(7)]

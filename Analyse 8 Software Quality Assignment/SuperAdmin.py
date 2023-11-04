@@ -2,6 +2,7 @@ import datetime
 import os
 import sqlite3
 import Authentication
+import Encryption
 from SystemAdmin import SystemAdmin
 
 class SuperAdmin(SystemAdmin):
@@ -18,9 +19,17 @@ class SuperAdmin(SystemAdmin):
         if (not Authentication.username_exists(self.username)):
             hashed_password = Authentication.hash_password(self.password, self.salt)
 
+            encrypted_username = Encryption.encrypt_data(Encryption.get_public_key(), self.username.encode('utf-8'))
+            encrypted_password = Encryption.encrypt_data(Encryption.get_public_key(), hashed_password)
+            encrypted_salt = Encryption.encrypt_data(Encryption.get_public_key(), self.salt.encode('utf-8'))
+            encrypted_role = Encryption.encrypt_data(Encryption.get_public_key(), self.role.encode('utf-8'))
+            encrypted_first_name = Encryption.encrypt_data(Encryption.get_public_key(), self.first_name.encode('utf-8'))
+            encrypted_last_name = Encryption.encrypt_data(Encryption.get_public_key(), self.last_name.encode('utf-8'))
+            encrypted_registration_date = Encryption.encrypt_data(Encryption.get_public_key(), self.registration_date.encode('utf-8'))
+
             connection = sqlite3.connect("FitnessPlus.db")
             cursor = connection.cursor()
             cursor.execute("INSERT INTO users (username, password, salt, role, first_name, last_name, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                        (self.username, hashed_password, self.salt, self.role, self.first_name, self.last_name, self.registration_date))
+                        (encrypted_username, encrypted_password, encrypted_salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date))
             connection.commit()
             connection.close()

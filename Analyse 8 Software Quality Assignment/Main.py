@@ -4,9 +4,11 @@ import SharedInterface
 import TrainerInterface
 import SystemAdminInterface
 import SuperAdminInterface
+import Encryption
 from SuperAdmin import SuperAdmin
 
 
+Encryption.generate_keys()
 Database.create_database()
 super_admin = SuperAdmin()
 super_admin.add_super_admin()
