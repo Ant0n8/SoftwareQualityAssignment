@@ -6,11 +6,10 @@ import SystemAdminInterface
 import SuperAdminInterface
 import Encryption
 import Logging
-from datetime import datetime
 from SuperAdmin import SuperAdmin
 
-
-Encryption.generate_keys()
+# Function to generate keys when no keys have been made yet
+# Encryption.generate_keys() 
 Database.create_database()
 super_admin = SuperAdmin()
 super_admin.add_super_admin()
