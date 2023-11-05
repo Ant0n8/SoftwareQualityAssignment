@@ -35,6 +35,10 @@ def login_screen():
             password = input("Password: ")
 
         elif (choice == "9"):
+            if (username == "" or password == ""):
+                print("Username or Password hasn't been filled in.")
+                input("Press 'Enter' to try again")
+                continue
             return (username, password)
         
         elif (choice == "0"):
