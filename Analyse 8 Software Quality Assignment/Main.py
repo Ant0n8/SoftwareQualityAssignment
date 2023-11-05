@@ -48,6 +48,9 @@ while (loop):
         attempt = attempt + 1
         if (attempt > 3):
             Logging.add_log("...", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "Yes")
+            print("Attempted to log in too many times.")
+            input()
+            break
         else:
             Logging.add_log("...", "Unsuccessful login", f'Username:"{username}" is used for login with wrong password', "No")
         print("Invalid username or password")

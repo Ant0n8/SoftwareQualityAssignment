@@ -32,7 +32,7 @@ def super_admin_screen(username, role):
             SharedInterface.modify_member_screen(username)
 
         elif (choice == "3"):
-            SharedInterface.delete_member_screen()
+            SharedInterface.delete_member_screen(username)
 
         elif (choice == "4"):
             SharedInterface.search_member_screen()
@@ -44,13 +44,13 @@ def super_admin_screen(username, role):
             SharedInterface.modify_user_screen(username, role)
 
         elif (choice == "7"):
-            SharedInterface.delete_user_screen(role)
+            SharedInterface.delete_user_screen(username, role)
         
         elif (choice == "8"):
             SharedInterface.list_users_screen()
 
         elif (choice == "9"):
-            SharedInterface.update_user_password_screen(role)
+            SharedInterface.update_user_password_screen(username, role)
 
         elif (choice == "10"):
             SharedInterface.logs_screen(role)
