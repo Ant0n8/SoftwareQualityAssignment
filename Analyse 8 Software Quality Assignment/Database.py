@@ -32,5 +32,17 @@ def create_database():
         )
     ''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS logs (
+            number TEXT PRIMARY KEY,
+            date TEXT,
+            time TEXT,
+            username TEXT,
+            activity TEXT,
+            additional_info TEXT,
+            suspicious TEXT
+        )
+    ''')
+
     connection.commit()
     connection.close()

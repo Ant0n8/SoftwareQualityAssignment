@@ -38,10 +38,11 @@ while (loop):
         current_time = datetime.now().time().strftime("%H:%M:%S")
         log_number = Logging.get_next_log_number()
 
-        log_content = f"{log_number}|{current_date}|{current_time}|{current_user_username}|Logged in|...|No"
-        encrypted_log = Encryption.encrypt_data(Encryption.get_public_key(), log_content.encode('utf-8'))
+        # log_content = f"{log_number}|{current_date}|{current_time}|{current_user_username}|Logged in|...|No"
+        # encrypted_log = Encryption.encrypt_data(Encryption.get_public_key(), log_content.encode('utf-8'))
     
-        logger.info(log_content)
+        # logger.info(log_content)
+        Logging.add_log(log_number, current_date, current_time, current_user_username, "activity", "additional_info", "no")
 
         if (current_user_role == "Trainer"):
             TrainerInterface.trainer_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
