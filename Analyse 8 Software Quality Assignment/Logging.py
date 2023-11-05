@@ -56,3 +56,20 @@ def get_log_count():
         count += 1
 
     return count
+
+def get_alert():
+    connection = sqlite3.connect("FitnessPlus.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT suspicious FROM logs")
+    logs_data = cursor.fetchall()
+    connection.close()
+
+    for data in logs_data:
+        encrypted_suspicious = data[0]
+    
+        decrypted_suspicious = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_suspicious).decode('utf-8')
+
+        if (decrypted_suspicious == "Yes"):
+            return True
+        
+    return False

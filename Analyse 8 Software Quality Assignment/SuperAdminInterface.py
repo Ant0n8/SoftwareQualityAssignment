@@ -1,7 +1,12 @@
 import SharedInterface
-
+import Logging
 
 def super_admin_screen(username, role):
+    alert_message = ""
+    alert = Logging.get_alert()
+    if (alert):
+        alert_message = "(Suspicious Activity)"
+
     loop = True
     while (loop):
         SharedInterface.clear_console()
@@ -18,7 +23,7 @@ def super_admin_screen(username, role):
         print("[8] List Users")
         print("[9] Update User Password")
         print()
-        print("[10] Check Logs")
+        print("[10] Check Logs " + alert_message)
         print("[11] Backup")
         print()
         print("[0] Logout")
