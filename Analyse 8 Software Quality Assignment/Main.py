@@ -14,12 +14,7 @@ Encryption.generate_keys()
 Database.create_database()
 super_admin = SuperAdmin()
 super_admin.add_super_admin()
-logger = Logging.setup_logging()
 
-
-current_date = datetime.now().strftime("%d/%m/%Y")
-current_time = datetime.now().time().strftime("%H:%M:%S")
-log_number = Logging.get_next_log_number()
 attempt = 0
 loop = True
 while (loop):
@@ -38,16 +33,7 @@ while (loop):
         current_user_last_name = current_user[5]
         current_user_registration_date = current_user[6]
 
-        # Log succesful login attempt
-        current_date = datetime.now().strftime("%d/%m/%Y")
-        current_time = datetime.now().time().strftime("%H:%M:%S")
-        log_number = Logging.get_next_log_number()
-
-        # log_content = f"{log_number}|{current_date}|{current_time}|{current_user_username}|Logged in|...|No"
-        # encrypted_log = Encryption.encrypt_data(Encryption.get_public_key(), log_content.encode('utf-8'))
-    
-        # logger.info(log_content)
-        Logging.add_log(log_number, current_date, current_time, current_user_username, "activity", "additional_info", "no")
+        Logging.add_log(current_user_username, "Logged in", "...", "No")
 
         if (current_user_role == "Trainer"):
             TrainerInterface.trainer_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
@@ -56,15 +42,13 @@ while (loop):
             SystemAdminInterface.system_admin_screen(current_user_username, current_user_password, current_user_salt, current_user_role, current_user_first_name, current_user_last_name, current_user_registration_date)
 
         elif (current_user_role == "SuperAdmin"):
-            SuperAdminInterface.super_admin_screen(current_user_role)
+            SuperAdminInterface.super_admin_screen(current_user_username, current_user_role)
 
     else:
         attempt = attempt + 1
         if (attempt > 3):
-            log_content = f"{log_number}|{current_date}|{current_time}|...|...|Multiple usernames and passwords are tried in a row|Yes"
-            logger.warning(log_content)
+            Logging.add_log("...", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "Yes")
         else:
-            log_content = f'{log_number}|{current_date}|{current_time}|...|Unsuccessful login|Username:"{username}" is used for login with wrong password|No'
-            logger.info(log_content)
+            Logging.add_log("...", "Unsuccessful login", f'Username:"{username}" is used for login with wrong password', "No")
         print("Invalid username or password")
         input("Press 'Enter' to continue")

@@ -35,10 +35,10 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
             SharedInterface.update_own_password_screen(username, password, salt)
 
         elif (choice == "3"):
-            SharedInterface.add_member_screen()
+            SharedInterface.add_member_screen(username)
 
         elif (choice == "4"):
-            SharedInterface.modify_member_screen()
+            SharedInterface.modify_member_screen(username)
 
         elif (choice == "5"):
             SharedInterface.delete_member_screen()
@@ -47,13 +47,13 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
             SharedInterface.search_member_screen()
 
         elif (choice == "7"):
-            SharedInterface.add_user_screen(role)
+            SharedInterface.add_user_screen(username, role)
 
         elif (choice == "8"):
-            SharedInterface.modify_user_screen(role)
+            SharedInterface.modify_user_screen(username, role)
 
         elif (choice == "9"):
-            SharedInterface.delete_user_screen(role)
+            SharedInterface.delete_user_screen(username, role)
         
         elif (choice == "10"):
             SharedInterface.list_users_screen()

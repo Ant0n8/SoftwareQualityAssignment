@@ -1,7 +1,7 @@
 import SharedInterface
 
 
-def super_admin_screen(role):
+def super_admin_screen(username, role):
     loop = True
     while (loop):
         SharedInterface.clear_console()
@@ -26,10 +26,10 @@ def super_admin_screen(role):
         print("--------------------------------------------------")
         
         if (choice == "1"):
-            SharedInterface.add_member_screen()
+            SharedInterface.add_member_screen(username)
         
         elif (choice == "2"):
-            SharedInterface.modify_member_screen()
+            SharedInterface.modify_member_screen(username)
 
         elif (choice == "3"):
             SharedInterface.delete_member_screen()
@@ -38,10 +38,10 @@ def super_admin_screen(role):
             SharedInterface.search_member_screen()
 
         elif (choice == "5"):
-            SharedInterface.add_user_screen(role)
+            SharedInterface.add_user_screen(username, role)
 
         elif (choice == "6"):
-            SharedInterface.modify_user_screen(role)
+            SharedInterface.modify_user_screen(username, role)
 
         elif (choice == "7"):
             SharedInterface.delete_user_screen(role)

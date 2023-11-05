@@ -26,10 +26,10 @@ def trainer_screen(username, password, salt, first_name, last_name, registration
             SharedInterface.update_own_password_screen(username, password, salt)
 
         elif (choice == "3"):
-            SharedInterface.add_member_screen()
+            SharedInterface.add_member_screen(username)
 
         elif (choice == "4"):
-            SharedInterface.modify_member_screen()
+            SharedInterface.modify_member_screen(username)
 
         elif (choice == "5"):
             SharedInterface.search_member_screen()

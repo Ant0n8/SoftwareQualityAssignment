@@ -44,7 +44,7 @@ def login_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def add_member_screen():
+def add_member_screen(username):
     first_name = ""
     last_name = ""
     age = ""
@@ -121,6 +121,7 @@ def add_member_screen():
                     input("Press 'Enter' to continue")
             
             if (not Authentication.is_valid_gender(gender)):
+                Logging.add_log(username, "Invalid Input", f'Filled in {gender} for the gender field', "Yes")
                 print("Bad input incident logged")
                 input()
                 loop = False
@@ -236,6 +237,7 @@ def add_member_screen():
                             input("Press 'Enter' to continue")
 
                     if (not Authentication.is_valid_city(city)):
+                        Logging.add_log(username, "Invalid Input", f'Filled in {city} for the city field', "Yes")
                         print("Bad input incident logged")
                         input()
                         loop_address = False
@@ -281,6 +283,7 @@ def add_member_screen():
                 if (confirm == "yes"):
                     new_member = Member(first_name, last_name, age, gender, weight, address, email, phone_number)
                     SuperAdmin.add_member(new_member)
+                    Logging.add_log(username, "New member is created", f'Name: {first_name} {last_name}', "No")
                     print("Member added succesfully")
                     input("Press 'Enter' to continue")
                     break
@@ -300,7 +303,7 @@ def add_member_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def add_user_screen(current_user_role):
+def add_user_screen(current_user_username, current_user_role):
     username = ""
     password = ""
     first_name = ""
@@ -386,6 +389,7 @@ def add_user_screen(current_user_role):
                     input("Press 'Enter' to continue")
             
             if (role != "Trainer" and role != "SystemAdmin"):
+                Logging.add_log(current_user_username, "Invalid Input", f'Filled in {role} for the role field', "Yes")
                 print("Bad input incident logged")
                 input()
                 loop = False
@@ -396,6 +400,7 @@ def add_user_screen(current_user_role):
                 if (confirm == "yes" and role == "Trainer"):
                     new_trainer = Trainer(username, password, first_name, last_name)
                     SuperAdmin.add_user(new_trainer)
+                    Logging.add_log(username, "New trainer is created", f'Username: {username}', "No")
                     print("Trainer added succesfully")
                     input("Press 'Enter' to continue")
                     loop = False
@@ -403,6 +408,7 @@ def add_user_screen(current_user_role):
                 elif (confirm == "yes" and role == "SystemAdmin"):
                     new_system_admin = SystemAdmin(username, password, first_name, last_name)
                     SuperAdmin.add_user(new_system_admin)
+                    Logging.add_log(username, "New admin is created", f'Username: {username}', "No")
                     print("SystemAdmin added succesfully")
                     input("Press 'Enter' to continue")
                     loop = False
@@ -442,7 +448,7 @@ def list_users_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def delete_member_screen():
+def delete_member_screen(username):
     id = ""
     first_name = ""
     last_name = ""
@@ -501,6 +507,7 @@ def delete_member_screen():
                 confirm = input("Type 'delete' to delete member or press 'Enter' to cancel: ")
                 if (confirm == "delete"):
                     SuperAdmin.delete_member(id)
+                    Logging.add_log(username, "Deleted member", f"member: {id}", "No")
                     print("Member deleted succesfully")
                     input("Press 'Enter' to continue")
                     loop = False
@@ -520,7 +527,7 @@ def delete_member_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def delete_user_screen(current_user_role):
+def delete_user_screen(current_user_username, current_user_role):
     username = ""
     role = ""
     first_name = ""
@@ -566,6 +573,7 @@ def delete_user_screen(current_user_role):
                 confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
                 if (current_user_role == "SuperAdmin"):
                     if (confirm == "delete"):
+                        Logging.add_log(current_user_username, "Deleted user", f"user: {username}", "No")
                         SuperAdmin.delete_user(username)
                         print("User deleted succesfully")
                         input("Press 'Enter' to continue")
@@ -578,6 +586,7 @@ def delete_user_screen(current_user_role):
                 elif (current_user_role == "SystemAdmin" and role == "Trainer"):
                     if (confirm == "delete"):
                         SuperAdmin.delete_user(username)
+                        Logging.add_log(current_user_username, "Deleted user", f"trainer: {username}", "No")
                         print("User deleted succesfully")
                         input("Press 'Enter' to continue")
                         loop = False
@@ -587,6 +596,7 @@ def delete_user_screen(current_user_role):
                         input("Press 'Enter' to continue")
 
                 elif (current_user_role == "SystemAdmin" and role != "Trainer"):
+                    Logging.add_log(current_user_username, "Attempted to delete admin", f"admin: {username}", "Yes")
                     print("Access denied insufficient authority level")
                     input("Press 'Enter' to continue")
             
@@ -601,7 +611,7 @@ def delete_user_screen(current_user_role):
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def modify_member_screen():
+def modify_member_screen(username):
     id = ""
     first_name = ""
     last_name = ""
@@ -703,6 +713,7 @@ def modify_member_screen():
                     input("Press 'Enter' to continue")
             
             if (not Authentication.is_valid_gender(gender)):
+                Logging.add_log(username, "Invalid Input", f'Filled in {gender} for the gender field', "Yes")
                 print("Bad input incident logged")
                 input()
                 loop = False
@@ -818,6 +829,7 @@ def modify_member_screen():
                             input("Press 'Enter' to continue")
 
                     if (not Authentication.is_valid_city(city)):
+                        Logging.add_log(username, "Invalid Input", f'Filled in {city} for the city field', "Yes")
                         print("Bad input incident logged")
                         input()
                         loop_address = False
@@ -886,7 +898,7 @@ def modify_member_screen():
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def modify_user_screen(current_user_role):
+def modify_user_screen(current_user_name, current_user_role):
     username = ""
     role = ""
     first_name = ""
@@ -977,6 +989,7 @@ def modify_user_screen(current_user_role):
                         input("Press 'Enter' to continue")
 
                 elif (current_user_role == "SystemAdmin" and role != "Trainer"):
+                    Logging.add_log(current_user_name, "Unauthorized", f'Tried to modify member ', "Yes")
                     print("Access denied insufficient authority level")
                     input("Press 'Enter' to continue")
 
@@ -1084,7 +1097,7 @@ def update_own_password_screen(username, password, salt):
             print("Invalid option")
             input("Press 'Enter' to continue")
 
-def update_user_password_screen(role):
+def update_user_password_screen(current_user_username, role):
     username = ""
     new_password = ""
 
@@ -1126,6 +1139,7 @@ def update_user_password_screen(role):
                 user_salt = user_info[2]
                 if (confirm == "yes" and Authentication.is_valid_password(new_password)):
                     SystemAdmin.update_password(username, Authentication.hash_password(new_password, user_salt))
+                    Logging.add_log(current_user_username, "Updated password", f"user: {username}", "No")
                     print("Password succesfully updated")
                     input("Press 'Enter' to continue")
                     loop = False
@@ -1157,6 +1171,7 @@ def update_user_password_screen(role):
                         input("Press 'Enter' to continue")
                 
                 else:
+                    Logging.add_log(current_user_username, "Attempted to update password", f"user: {username}", "Yes")
                     print("Access denied insufficient authority level")
                     input("Press 'Enter' to continue")
 

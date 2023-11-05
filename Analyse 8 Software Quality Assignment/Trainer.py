@@ -96,20 +96,20 @@ class Trainer(Member):
         print(f"{'ID'.ljust(15)} {'Firstname'.ljust(15)} {'LastName'.ljust(15)} {'Age'.ljust(15)} {'Gender'.ljust(15)} {'Weight'.ljust(15)} {'Address'.ljust(30)} {'Email'.ljust(25)} {'Phone Number'.ljust(15)} {'Registration Date'}\n")
         count = 0
         for member in members:
-            encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number = member
+            encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number, encrypted_registration_date = member
 
-            decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
             decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id).decode('utf-8')
-            decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name).decode('utf-8')
-            decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')
+            decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name).decode('utf-8')[:15]
+            decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')[:15]
             decrypted_age = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_age).decode('utf-8')
             decrypted_gender = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_gender).decode('utf-8')
             decrypted_weight = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_weight).decode('utf-8')
-            decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address).decode('utf-8')
-            decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email).decode('utf-8')
+            decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address).decode('utf-8')[:30]
+            decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email).decode('utf-8')[:25]
             decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number).decode('utf-8')
+            decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
 
-            if (search_key in decrypted_id or search_key in decrypted_first_name or search_key in decrypted_last_name or search_key in decrypted_address or search_key in decrypted_email or search_key in decrypted_phone_number):
+            if (search_key in decrypted_id or search_key in decrypted_first_name.lower() or search_key in decrypted_last_name.lower() or search_key in decrypted_address.lower() or search_key in decrypted_email or search_key in decrypted_phone_number):
                 count += 1
                 print(f"{str(decrypted_id).ljust(15)} {decrypted_first_name.ljust(15)} {decrypted_last_name.ljust(15)} {str(decrypted_age).ljust(15)} {decrypted_gender.ljust(15)} {str(decrypted_weight).ljust(15)} {decrypted_address.ljust(30)} {decrypted_email.ljust(25)} {decrypted_phone_number.ljust(15)} {decrypted_registration_date}")
 
