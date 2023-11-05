@@ -1167,3 +1167,32 @@ def update_user_password_screen(role):
         else:
             print("Invalid option")
             input("Press 'Enter' to continue")
+
+def logs_screen(role):
+    # Check if user is an administrator, if not return
+    if role not in ["SuperAdmin", "SystemAdmin"]:
+        return
+
+    loop = True
+    while(loop):
+        clear_console()
+        print("Logs")
+        print("--------------------------------------------------")
+        print(f"{' '.ljust(5)} {'Date'.ljust(15)} {'Time'.ljust(15)} {'Username'.ljust(15)} {'Activity'.ljust(15)} {'Additional Info'.ljust(25)} {'Suspicious'}\n")
+        with open("activity.log", "r") as log_file:
+            for line in log_file:
+                parts = line.strip().split('|')
+                if len(parts) >= 7:
+                    no, date, time, username, activity, additional_info, suspicious = parts[:7]
+                else:
+                    no, date, time, username, activity, additional_info, suspicious = parts[:7] + [''] * (7 - len(parts))
+                log_entry = f"{no.ljust(5)} {date.ljust(15)} {time.ljust(15)} {username.ljust(15)} {activity.ljust(15)} {additional_info.ljust(25)} {suspicious}"
+                print(log_entry)
+        print()
+        print("[0] Back")
+        print("--------------------------------------------------")
+        choice = input("Select an option: ")
+        print("--------------------------------------------------")
+
+        if (choice == "0"):
+            break

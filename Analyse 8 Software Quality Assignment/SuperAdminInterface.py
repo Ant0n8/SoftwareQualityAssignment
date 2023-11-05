@@ -18,6 +18,8 @@ def super_admin_screen(role):
         print("[8] List Users")
         print("[9] Update User Password")
         print()
+        print("[10] Check Logs")
+        print()
         print("[0] Logout")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
@@ -49,6 +51,9 @@ def super_admin_screen(role):
 
         elif (choice == "9"):
             SharedInterface.update_user_password_screen(role)
+
+        elif (choice == "10"):
+            SharedInterface.logs_screen(role)
 
         elif (choice == "0"):
             loop = False

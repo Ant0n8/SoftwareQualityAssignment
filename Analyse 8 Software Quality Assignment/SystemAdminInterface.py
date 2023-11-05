@@ -21,6 +21,8 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
         print("[10] List Users")
         print("[11] Update User Password")
         print()
+        print("[12] Check Logs")
+        print()
         print("[0] Logout")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
@@ -58,6 +60,9 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
 
         elif (choice == "11"):
             SharedInterface.update_user_password_screen(role)
+
+        elif (choice == "12"):
+            SharedInterface.logs_screen(role)
 
         elif (choice == "0"):
             loop = False

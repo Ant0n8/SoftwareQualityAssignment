@@ -6,6 +6,7 @@ import SystemAdminInterface
 import SuperAdminInterface
 import Encryption
 import Logging
+from datetime import datetime
 from SuperAdmin import SuperAdmin
 
 
@@ -33,7 +34,14 @@ while (loop):
         current_user_registration_date = current_user[6]
 
         # Log succesful login attempt
-        logger.info(f"{current_user_username} Logged in No")
+        current_date = datetime.now().strftime("%d/%m/%Y")
+        current_time = datetime.now().time().strftime("%H:%M:%S")
+        log_number = Logging.get_next_log_number()
+
+        log_content = f"{log_number}|{current_date}|{current_time}|{current_user_username}|Logged in|...|No"
+        encrypted_log = Encryption.encrypt_data(Encryption.get_public_key(), log_content.encode('utf-8'))
+    
+        logger.info(log_content)
 
         if (current_user_role == "Trainer"):
             TrainerInterface.trainer_screen(current_user_username, current_user_password, current_user_salt, current_user_first_name, current_user_last_name, current_user_registration_date)
