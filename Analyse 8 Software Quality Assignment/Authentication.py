@@ -110,7 +110,7 @@ def username_exists(username):
 
     if (user_data):
         for data in user_data:
-            encrypted_username = data
+            encrypted_username = data[0]
 
             decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
 

@@ -8,7 +8,7 @@ import Encryption
 import Logging
 from SuperAdmin import SuperAdmin
 
-                        
+
 Encryption.generate_keys()
 Database.create_database()
 super_admin = SuperAdmin()

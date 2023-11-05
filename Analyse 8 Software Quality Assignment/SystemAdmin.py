@@ -18,14 +18,14 @@ class SystemAdmin(Trainer):
     def delete_member(id):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM members")
+        cursor.execute("SELECT id FROM members")
         member_data = cursor.fetchall()
 
         if (member_data):
             for data in member_data:
-                encrypted_id = data
+                encrypted_id = data[0]
 
-                decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
+                decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id).decode('utf-8')
                 
                 if (decrypted_id == id):
                     cursor.execute("DELETE FROM members WHERE id=?", (encrypted_id,))
@@ -36,7 +36,7 @@ class SystemAdmin(Trainer):
     def list_users():
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE role != 'SuperAdmin'")
+        cursor.execute("SELECT username, role, first_name, last_name, registration_date FROM users WHERE role != 'SuperAdmin'")
         users = cursor.fetchall()
         connection.close()
         
@@ -45,7 +45,7 @@ class SystemAdmin(Trainer):
         for user in users:
             count += 1
 
-            encrypted_username, password, salt, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user
+            encrypted_username, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user
         
             decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
             decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
@@ -80,14 +80,14 @@ class SystemAdmin(Trainer):
 
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT username FROM users")
         user_data = cursor.fetchall()
 
         if (user_data):
             for data in user_data:
-                encrypted_username = data
+                encrypted_username = data[0]
 
-                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username.encode('utf-8'))
+                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
                 
                 if (decrypted_username == username):
                     cursor.execute("UPDATE users SET first_name=?, last_name=? WHERE username=?", 
@@ -99,14 +99,14 @@ class SystemAdmin(Trainer):
     def delete_user(username):
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT username FROM users")
         user_data = cursor.fetchall()
 
         if (user_data):
             for data in user_data:
-                encrypted_username = data
+                encrypted_username = data[0]
 
-                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username.encode('utf-8'))
+                decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
                 
                 if (decrypted_username == username):
                     cursor.execute("DELETE FROM users WHERE username=?", (encrypted_username,))
