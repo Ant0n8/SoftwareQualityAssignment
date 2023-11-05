@@ -74,4 +74,4 @@ def get_logs():
         decrypted_additional_info = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_additional_info).decode('utf-8')
         decrypted_suspicious = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_suspicious).decode('utf-8')
 
-        print(f"{decrypted_number.ljust(5)} {decrypted_date.ljust(15)} {decrypted_time.ljust(15)} {decrypted_username.ljust(15)} {decrypted_activity.ljust(15)} {decrypted_additional_info.ljust(25)} {decrypted_suspicious}")
+        print(f"{decrypted_number.ljust(5)} {decrypted_date.ljust(15)} {decrypted_time.ljust(15)} {decrypted_username.ljust(15)} {decrypted_activity.ljust(25)} {decrypted_additional_info.ljust(30)} {decrypted_suspicious}")

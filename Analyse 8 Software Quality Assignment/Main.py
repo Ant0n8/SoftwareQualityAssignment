@@ -16,6 +16,11 @@ super_admin = SuperAdmin()
 super_admin.add_super_admin()
 logger = Logging.setup_logging()
 
+
+current_date = datetime.now().strftime("%d/%m/%Y")
+current_time = datetime.now().time().strftime("%H:%M:%S")
+log_number = Logging.get_next_log_number()
+attempt = 0
 loop = True
 while (loop):
     current_user = None
@@ -54,5 +59,12 @@ while (loop):
             SuperAdminInterface.super_admin_screen(current_user_role)
 
     else:
+        attempt = attempt + 1
+        if (attempt > 3):
+            log_content = f"{log_number}|{current_date}|{current_time}|...|...|Multiple usernames and passwords are tried in a row|Yes"
+            logger.warning(log_content)
+        else:
+            log_content = f'{log_number}|{current_date}|{current_time}|...|Unsuccessful login|Username:"{username}" is used for login with wrong password|No'
+            logger.info(log_content)
         print("Invalid username or password")
         input("Press 'Enter' to continue")

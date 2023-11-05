@@ -1179,17 +1179,7 @@ def logs_screen(role):
         clear_console()
         print("Logs")
         print("--------------------------------------------------")
-        # print(f"{' '.ljust(5)} {'Date'.ljust(15)} {'Time'.ljust(15)} {'Username'.ljust(15)} {'Activity'.ljust(15)} {'Additional Info'.ljust(25)} {'Suspicious'}\n")
-        # with open("activity.log", "r") as log_file:
-        #     for line in log_file:
-        #         parts = line.strip().split('|')
-        #         if len(parts) >= 7:
-        #             no, date, time, username, activity, additional_info, suspicious = parts[:7]
-        #         else:
-        #             no, date, time, username, activity, additional_info, suspicious = parts[:7] + [''] * (7 - len(parts))
-        #         log_entry = f"{no.ljust(5)} {date.ljust(15)} {time.ljust(15)} {username.ljust(15)} {activity.ljust(15)} {additional_info.ljust(25)} {suspicious}"
-        #         print(log_entry)
-        print(f"{' '.ljust(5)} {'Date'.ljust(15)} {'Time'.ljust(15)} {'Username'.ljust(15)} {'Activity'.ljust(15)} {'Additional Info'.ljust(25)} {'Suspicious'}\n")
+        print(f"{' '.ljust(5)} {'Date'.ljust(15)} {'Time'.ljust(15)} {'Username'.ljust(15)} {'Activity'.ljust(25)} {'Additional Info'.ljust(30)} {'Suspicious'}\n")
         Logging.get_logs()
         print()
         print("[0] Back")
