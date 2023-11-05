@@ -57,7 +57,7 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
             SharedInterface.list_users_screen()
 
         elif (choice == "11"):
-            SharedInterface.update_user_password_screen(password, salt, role)
+            SharedInterface.update_user_password_screen(role)
 
         elif (choice == "0"):
             loop = False

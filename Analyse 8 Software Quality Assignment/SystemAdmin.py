@@ -36,15 +36,13 @@ class SystemAdmin(Trainer):
     def list_users():
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT username, role, first_name, last_name, registration_date FROM users WHERE role != 'SuperAdmin'")
+        cursor.execute("SELECT username, role, first_name, last_name, registration_date FROM users")
         users = cursor.fetchall()
         connection.close()
         
         print(f"{' '.ljust(5)} {'Username'.ljust(15)} {'Role'.ljust(15)} {'Firstname'.ljust(15)} {'Lastname'.ljust(15)} {'Registration Date'}\n")
         count = 0
         for user in users:
-            count += 1
-
             encrypted_username, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_registration_date = user
         
             decrypted_username = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_username).decode('utf-8')
@@ -53,6 +51,10 @@ class SystemAdmin(Trainer):
             decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')
             decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
 
+            if (decrypted_role == "SuperAdmin"):
+                continue
+            
+            count += 1
             print(f"{str(count).ljust(5)} {decrypted_username.ljust(15)} {decrypted_role.ljust(15)} {decrypted_first_name.ljust(15)} {decrypted_last_name.ljust(15)} {decrypted_registration_date}")
         
         print()

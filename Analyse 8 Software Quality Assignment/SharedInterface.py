@@ -562,8 +562,8 @@ def delete_user_screen(current_user_role):
 
         elif (choice == "9"):
             if (username != ""):
+                confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
                 if (current_user_role == "SuperAdmin"):
-                    confirm = input("Type 'delete' to delete user or press 'Enter' to cancel: ")
                     if (confirm == "delete"):
                         SuperAdmin.delete_user(username)
                         print("User deleted succesfully")
