@@ -1,6 +1,7 @@
 import os
 import Authentication
 import Logging
+import Backup
 from Member import Member
 from Trainer import Trainer
 from SystemAdmin import SystemAdmin
@@ -1208,3 +1209,39 @@ def logs_screen(role):
 
         if (choice == "0"):
             break
+
+def backup_screen():
+    loop = True
+    while (loop):
+        clear_console()
+        print("Backup")
+        print("--------------------------------------------------")
+        print("[1] Backup")
+        print("[2] Restore")
+        print()
+        print("[0] Back")
+        print("--------------------------------------------------")
+        choice = input("Select an option: ")
+        print("--------------------------------------------------")
+
+        if (choice == "1"):
+            confirm = input("Type 'yes' to create a backup or press 'Enter' to cancel")
+            if (confirm == "yes"):
+                Backup.backup()
+                print("Backup created succesfully")
+                input("Press 'Enter' to continue")
+            
+            else:
+                print("Backup not created")
+                input("Press 'Enter' to continue")
+
+        elif (choice == "2"):
+            selected_backup = Backup.select_backup()
+
+            if (selected_backup != None):
+                Backup.restore_backup(selected_backup)
+                print("Backup restored succesfully")
+                input("Press 'Enter' to continue")
+
+        elif (choice == "0"):
+            loop = False

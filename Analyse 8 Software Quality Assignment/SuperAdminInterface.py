@@ -19,6 +19,7 @@ def super_admin_screen(username, role):
         print("[9] Update User Password")
         print()
         print("[10] Check Logs")
+        print("[11] Backup")
         print()
         print("[0] Logout")
         print("--------------------------------------------------")
@@ -54,6 +55,9 @@ def super_admin_screen(username, role):
 
         elif (choice == "10"):
             SharedInterface.logs_screen(role)
+
+        elif (choice == "11"):
+            SharedInterface.backup_screen()
 
         elif (choice == "0"):
             loop = False

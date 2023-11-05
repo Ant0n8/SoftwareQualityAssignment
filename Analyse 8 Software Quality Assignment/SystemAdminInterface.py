@@ -22,6 +22,7 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
         print("[11] Update User Password")
         print()
         print("[12] Check Logs")
+        print("[13] Backup")
         print()
         print("[0] Logout")
         print("--------------------------------------------------")
@@ -63,6 +64,9 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
 
         elif (choice == "12"):
             SharedInterface.logs_screen(role)
+
+        elif (choice == "13"):
+            SharedInterface.backup_screen()
 
         elif (choice == "0"):
             loop = False
