@@ -14,7 +14,7 @@ def trainer_screen(username, password, salt, first_name, last_name, registration
         print("[4] Modify Member")
         print("[5] Search Member")
         print()
-        print("[0] Back")
+        print("[0] Logout")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")

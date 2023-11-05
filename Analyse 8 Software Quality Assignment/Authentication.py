@@ -36,25 +36,26 @@ def get_member_info(id):
 
     if (member_data):
         for data in member_data:
-            encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number = data
+            encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number, encrypted_registration_date = data
 
-            decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id.encode('utf-8'))
+            decrypted_id = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_id).decode('utf-8')
             
             if (decrypted_id == id):
-                decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date.encode('utf-8'))
-                decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role.encode('utf-8'))
-                decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name.encode('utf-8'))
-                decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name.encode('utf-8'))
-                decrypted_age = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_age.encode('utf-8'))
-                decrypted_gender = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_gender.encode('utf-8'))
-                decrypted_weight = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_weight.encode('utf-8'))
-                decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address.encode('utf-8'))
-                decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email.encode('utf-8'))
-                decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number.encode('utf-8'))
+                decrypted_role = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_role).decode('utf-8')
+                decrypted_first_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_first_name).decode('utf-8')
+                decrypted_last_name = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_last_name).decode('utf-8')
+                decrypted_age = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_age).decode('utf-8')
+                decrypted_gender = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_gender).decode('utf-8')
+                decrypted_weight = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_weight).decode('utf-8')
+                decrypted_address = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_address).decode('utf-8')
+                decrypted_email = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_email).decode('utf-8')
+                decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number).decode('utf-8')
+                decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
 
-                member_data = (decrypted_registration_date, decrypted_id, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_age, decrypted_gender, decrypted_weight, decrypted_address, decrypted_email, decrypted_phone_number)
-                break
+                member_data = (decrypted_id, decrypted_role, decrypted_first_name, decrypted_last_name, decrypted_age, decrypted_gender, decrypted_weight, decrypted_address, decrypted_email, decrypted_phone_number, decrypted_registration_date)
+                return member_data
 
+    member_data = None
     return member_data
 
 def get_user_info(username):
@@ -116,7 +117,6 @@ def username_exists(username):
 
             if (decrypted_username == username):
                 return True
-            break
     
     return False
 

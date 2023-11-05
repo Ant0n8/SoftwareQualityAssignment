@@ -21,7 +21,7 @@ def system_admin_screen(username, password, salt, role, first_name, last_name, r
         print("[10] List Users")
         print("[11] Update User Password")
         print()
-        print("[0] Back")
+        print("[0] Logout")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")

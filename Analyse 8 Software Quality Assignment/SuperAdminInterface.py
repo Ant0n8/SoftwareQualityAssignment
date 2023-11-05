@@ -1,7 +1,7 @@
 import SharedInterface
 
 
-def super_admin_screen(password, salt, role):
+def super_admin_screen(role):
     loop = True
     while (loop):
         SharedInterface.clear_console()
@@ -18,7 +18,7 @@ def super_admin_screen(password, salt, role):
         print("[8] List Users")
         print("[9] Update User Password")
         print()
-        print("[0] Back")
+        print("[0] Logout")
         print("--------------------------------------------------")
         choice = input("Select an option: ")
         print("--------------------------------------------------")
@@ -48,7 +48,7 @@ def super_admin_screen(password, salt, role):
             SharedInterface.list_users_screen()
 
         elif (choice == "9"):
-            SharedInterface.update_user_password_screen(password, salt, role)
+            SharedInterface.update_user_password_screen(role)
 
         elif (choice == "0"):
             loop = False

@@ -1,9 +1,9 @@
 import random
 import datetime
 
+
 class Member:
     def __init__(self, first_name, last_name, age, gender, weight, address, email, phone_number):
-        self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
         self.id = self.generate_id()
         self.role = "Member"
         self.first_name = first_name
@@ -14,9 +14,10 @@ class Member:
         self.address = address
         self.email = email
         self.phone_number = phone_number
+        self.registration_date = datetime.date.today().strftime("%d-%m-%Y")
 
-    def generate_id():
-        current_year = datetime.now().year % 100
+    def generate_id(self):
+        current_year = datetime.date.today().year % 100
         random_digits = [str(random.randint(0, 9)) for _ in range(7)]
 
         digits = [int(digit) for digit in str(current_year) + "".join(random_digits)]

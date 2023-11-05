@@ -6,13 +6,13 @@ def create_database():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS members (
-            id INTEGER PRIMARY KEY,
+            id TEXT PRIMARY KEY,
             role TEXT,
             first_name TEXT,
             last_name TEXT,
-            age INTEGER,
+            age TEXT,
             gender TEXT,
-            weight REAL,
+            weight TEXT,
             address TEXT,
             email TEXT,
             phone_number TEXT,

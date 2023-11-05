@@ -34,22 +34,22 @@ class Trainer(Member):
         connection.close()
 
     def add_member(member):
-        encrypted_registration_date = Encryption.encrypt_data(Encryption.get_public_key(), member.registration_date.encode('utf-8'))
-        encrypted_id = Encryption.encrypt_data(Encryption.get_public_key(), member.id.encode('utf-8'))
-        encrypted_role = Encryption.encrypt_data(Encryption.get_public_key(), member.role.encode('utf-8'))
-        encrypted_first_name = Encryption.encrypt_data(Encryption.get_public_key(), member.first_name.encode('utf-8'))
-        encrypted_last_name = Encryption.encrypt_data(Encryption.get_public_key(), member.last_name.encode('utf-8'))
-        encrypted_age = Encryption.encrypt_data(Encryption.get_public_key(), member.age.encode('utf-8'))
-        encrypted_gender = Encryption.encrypt_data(Encryption.get_public_key(), member.gender.encode('utf-8'))
-        encrypted_weight = Encryption.encrypt_data(Encryption.get_public_key(), member.weight.encode('utf-8'))
-        encrypted_address = Encryption.encrypt_data(Encryption.get_public_key(), member.address.encode('utf-8'))
-        encrypted_email = Encryption.encrypt_data(Encryption.get_public_key(), member.email.encode('utf-8'))
-        encrypted_phone_number = Encryption.encrypt_data(Encryption.get_public_key(), member.phone_number.encode('utf-8'))
+        encrypted_id = Encryption.encrypt_data(Encryption.get_public_key(), str(member.id).encode('utf-8'))
+        encrypted_role = Encryption.encrypt_data(Encryption.get_public_key(), str(member.role).encode('utf-8'))
+        encrypted_first_name = Encryption.encrypt_data(Encryption.get_public_key(), str(member.first_name).encode('utf-8'))
+        encrypted_last_name = Encryption.encrypt_data(Encryption.get_public_key(), str(member.last_name).encode('utf-8'))
+        encrypted_age = Encryption.encrypt_data(Encryption.get_public_key(), str(member.age).encode('utf-8'))
+        encrypted_gender = Encryption.encrypt_data(Encryption.get_public_key(), str(member.gender).encode('utf-8'))
+        encrypted_weight = Encryption.encrypt_data(Encryption.get_public_key(), str(member.weight).encode('utf-8'))
+        encrypted_address = Encryption.encrypt_data(Encryption.get_public_key(), str(member.address).encode('utf-8'))
+        encrypted_email = Encryption.encrypt_data(Encryption.get_public_key(), str(member.email).encode('utf-8'))
+        encrypted_phone_number = Encryption.encrypt_data(Encryption.get_public_key(), str(member.phone_number).encode('utf-8'))
+        encrypted_registration_date = Encryption.encrypt_data(Encryption.get_public_key(), str(member.registration_date).encode('utf-8'))
 
         connection = sqlite3.connect("FitnessPlus.db")
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO members (registration_date, id, role, first_name, last_name, age, gender, weight, address, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number))
+        cursor.execute("INSERT INTO members (id, role, first_name, last_name, age, gender, weight, address, email, phone_number, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number, encrypted_registration_date))
         connection.commit()
         connection.close()
 
@@ -96,8 +96,6 @@ class Trainer(Member):
         print(f"{'ID'.ljust(15)} {'Firstname'.ljust(15)} {'LastName'.ljust(15)} {'Age'.ljust(15)} {'Gender'.ljust(15)} {'Weight'.ljust(15)} {'Address'.ljust(30)} {'Email'.ljust(25)} {'Phone Number'.ljust(15)} {'Registration Date'}\n")
         count = 0
         for member in members:
-            count += 1
-
             encrypted_registration_date, encrypted_id, encrypted_role, encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_address, encrypted_email, encrypted_phone_number = member
 
             decrypted_registration_date = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_registration_date).decode('utf-8')
@@ -112,6 +110,7 @@ class Trainer(Member):
             decrypted_phone_number = Encryption.decrypt_data(Encryption.get_private_key(), encrypted_phone_number).decode('utf-8')
 
             if (search_key in decrypted_id or search_key in decrypted_first_name or search_key in decrypted_last_name or search_key in decrypted_address or search_key in decrypted_email or search_key in decrypted_phone_number):
+                count += 1
                 print(f"{str(decrypted_id).ljust(15)} {decrypted_first_name.ljust(15)} {decrypted_last_name.ljust(15)} {str(decrypted_age).ljust(15)} {decrypted_gender.ljust(15)} {str(decrypted_weight).ljust(15)} {decrypted_address.ljust(30)} {decrypted_email.ljust(25)} {decrypted_phone_number.ljust(15)} {decrypted_registration_date}")
 
         print("\nResults: " + str(count))

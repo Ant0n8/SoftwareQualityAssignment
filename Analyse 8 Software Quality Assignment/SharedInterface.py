@@ -547,7 +547,7 @@ def delete_user_screen(current_user_role):
 
         if (choice == "1"):
             username = input("Search Username: ")
-            if (Authentication.get_user_info(username) != None):
+            if (Authentication.username_exists(username)):
                 user = Authentication.get_user_info(username)
                 username = user[0]
                 role = user[3]
@@ -558,6 +558,7 @@ def delete_user_screen(current_user_role):
             else:
                 print("Invalid Username")
                 input("Press 'Enter' to continue")
+                username = ""
 
         elif (choice == "9"):
             if (username != ""):
@@ -652,6 +653,7 @@ def modify_member_screen():
             else:
                 print("Invalid Id")
                 input("Press 'Enter' to continue")
+                id = ""
 
         elif (choice == "2"):
             first_name = input("First Name: ").lower().capitalize()
@@ -911,7 +913,7 @@ def modify_user_screen(current_user_role):
 
         if (choice == "1"):
             username = input("Search Username: ")
-            if (Authentication.get_user_info(username) != None):
+            if (Authentication.username_exists(username)):
                 user = Authentication.get_user_info(username)
                 username = user[0]
                 role = user[3]
@@ -922,6 +924,7 @@ def modify_user_screen(current_user_role):
             else:
                 print("Invalid Username")
                 input("Press 'Enter' to continue")
+                username = ""
 
         elif (choice == "2"):
             first_name = input("First Name: ").lower().capitalize()
